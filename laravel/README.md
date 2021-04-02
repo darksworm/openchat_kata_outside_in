@@ -1,62 +1,188 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400"></a></p>
+# APIs
 
-<p align="center">
-<a href="https://travis-ci.org/laravel/framework"><img src="https://travis-ci.org/laravel/framework.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Here is a list of the APIs that need to be implemented by OpenChat.
 
-## About Laravel
+## Register New User
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+POST - openchat/registration
+{
+"username" : "Alice",
+"password" : "alki324d",
+"about" : "I love playing the piano and travelling."
+}
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+**Success**
+Status CREATED - 201
+Response:
+{
+"userId" : "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+"username" : "Alice",
+"about" : "I love playing the piano and travelling."
+}
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+**Failure**
+Status: BAD_REQUEST - 400
+Response: "Username already in use."
 
-## Learning Laravel
+## Login
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+POST - openchat/login
+{
+"username" : "Alice"
+"password" : "alki324d"
+}
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 1500 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+**Success**
+Status OK - 200
+Response:
+{
+"userId" : "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+"username" : "Alice",
+"about" : "I love playing the piano and travelling."
+}
 
-## Laravel Sponsors
+**Failure**
+Status: BAD_REQUEST - 400
+Response: "Invalid credentials."
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
 
-### Premium Partners
+## Create Post
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[Many](https://www.many.co.uk)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- **[Curotec](https://www.curotec.com/)**
-- **[OP.GG](https://op.gg)**
+POST openchat/user/<userId>/posts
+{
+"text" : "Hello everyone. I'm Alice."
+}
+**Success**
+Status CREATED - 201
+{
+"postId" : "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+"userId" : "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+"text" : "Hello everyone. I'm Alice.",
+"date" : "10/01/2018",
+"time" : "11:30:00"
+}
 
-## Contributing
+**Failure**
+Status: BAD_REQUEST - 400 (in case user does not exist)
+Response: "User does not exit."
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+## Retrieve Posts (User timeline)
 
-## Code of Conduct
+GET - openchat/user/<userId>/timeline
+[{
+"postId" : "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+"userId" : "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+"text" : "Anything interesting happening tonight?",
+"date" : "10/01/2018",
+"time" : "11:30:00"
+},{
+"postId" : "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+"userId" : "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+"text" : "Hello everyone. I'm Alice.",
+"date" : "10/01/2018",
+"time" : "09:00:00"
+}]
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+**Success**
+Status OK - 200
 
-## Security Vulnerabilities
+**Failure**
+Status: BAD_REQUEST - 400 (in case user does not exist)
+Response: "User does not exit."
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+## Follow User
 
-## License
+POST - openchat/follow
+{
+followerId: Alice ID,
+followeeId: Bob ID
+}
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+**Success**
+Status OK - 201
+
+**Failure**
+Status: BAD_REQUEST - 400  (in case one of the users doesn't exist)
+Response: "At least one of the users does not exit."
+
+## Retrieve Wall
+
+GET - openchat/user/<userId>/wall
+[{
+"postId" : "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+"userId" : "BOB_IDxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+"text" : "Planning to eat something with Charlie. Wanna join us?",
+"date" : "10/01/2018",
+"time" : "13:25:00"
+},{
+"postId" : "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+"userId" : "ALICE_ID-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+"text" : "Anything interesting happening tonight?",
+"date" : "10/01/2018",
+"time" : "11:30:00"
+},{
+"postId" : "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+"userId" : "BOB_IDxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+"text" : "What's up everyone?",
+"date" : "10/01/2018",
+"time" : "11:20:50"
+},{
+"postId" : "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+"userId" : "CHARLIE_IDxx-xxxx-xxxx-xxxxxxxxxxxx",
+"text" : "Hi all. Charlie here.",
+"date" : "10/01/2018",
+"time" : "09:15:34"
+},{
+"postId" : "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+"userId" : "ALICE_ID-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+"text" : "Anything interesting happening tonight?",
+"date" : "10/01/2018",
+"time" : "09:00:00"
+}]
+
+**Success**
+Status OK - 200
+
+**Failure**
+Status: BAD_REQUEST - 400 (in case user does not exist)
+Response: "User does not exist."
+
+## Retrieve All Users
+
+GET - openchat/users
+[{
+"userId" : "123e4567-e89b-12d3-a456-426655440000",
+"username" : "Alice",
+"about" : "I love playing the pianno and travel.",
+},{
+"userId" : "093f2342-e89b-12d3-a456-426655440000",
+"username" : "Bob",
+"about" : "Writer and photographer. Passionate about food and languages."
+},{
+"userId" : "316h3543-e89b-12d3-a456-426655440000",
+"username" : "Charlie",
+"about" : "I'm a basketball player, love cycling and meeting new people. "
+}]
+
+**Success**
+Status OK - 200
+
+## Retrieve all users followed by another user (followees)
+
+GET - openchat/user/:userId/followees
+[{
+"userId" : "123e4567-e89b-12d3-a456-426655440000",
+"username" : "Alice",
+"about" : "I love playing the pianno and travel.",
+},{
+"userId" : "093f2342-e89b-12d3-a456-426655440000",
+"username" : "Bob",
+"about" : "Writer and photographer. Passionate about food and languages."
+},{
+"userId" : "316h3543-e89b-12d3-a456-426655440000",
+"username" : "Charlie",
+"about" : "I'm a basketball player, love cycling and meeting new people. "
+}]
+
+**Success**
+Status OK - 200
