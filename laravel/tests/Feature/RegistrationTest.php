@@ -26,21 +26,27 @@ class RegistrationTest extends FeatureTestCase
     }
 
     public function
-    test_returns_201_and_empty_response_when_user_registered()
+    test_returns_201_and_user_info_when_user_registered()
     {
         $response = $this->post('/openchat/registration', self::ALICE_REGISTRATION_REQUEST);
 
         $response->assertStatus(201);
-        $this->assertEquals('', $response->getContent());
+
+        $response->assertJsonStructure(['username', 'about', 'userId']);
+        $response->assertJsonFragment([
+            'username' => self::ALICE_REGISTRATION_REQUEST['username'],
+            'about' => self::ALICE_REGISTRATION_REQUEST['about']
+        ]);
+
+        $uuid = $response->json('userId');
+        $this->assertTrue($this->isValidUuid($uuid), "an invalid uuid was returned: ${uuid}");
     }
 
     public function
     test_returns_400_when_registering_duplicate_username()
     {
         $response = $this->post('/openchat/registration', self::ALICE_REGISTRATION_REQUEST);
-
         $response->assertStatus(201);
-        $this->assertEquals('', $response->getContent());
 
         $response = $this->post('/openchat/registration', self::ALICE_REGISTRATION_REQUEST);
         $response->assertStatus(400);
@@ -83,5 +89,13 @@ class RegistrationTest extends FeatureTestCase
                 'about' => 'yes'
             ]]
         ];
+    }
+
+    private function isValidUuid(string $uuid) {
+        if (preg_match('/^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/', $uuid) !== 1) {
+            return false;
+        }
+
+        return true;
     }
 }

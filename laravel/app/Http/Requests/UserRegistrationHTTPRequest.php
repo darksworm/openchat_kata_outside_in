@@ -2,7 +2,7 @@
 
 namespace App\Http\Requests;
 
-class UserRegistrationRequest extends BaseRequest
+class UserRegistrationHTTPRequest extends BaseRequest
 {
     public function authorize(): bool
     {
