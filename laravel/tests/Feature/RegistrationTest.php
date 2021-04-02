@@ -2,9 +2,9 @@
 
 namespace Tests\Feature;
 
-use Tests\TestCase;
+use Tests\FeatureTestCase;
 
-class RegistrationTest extends TestCase
+class RegistrationTest extends FeatureTestCase
 {
     private const ALICE_REGISTRATION_REQUEST = [
         'username' => 'Alice',
