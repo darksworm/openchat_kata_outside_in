@@ -39,7 +39,7 @@ class RegistrationTest extends FeatureTestCase
         ]);
 
         $uuid = $response->json('userId');
-        $this->assertTrue($this->isValidUuid($uuid), "an invalid uuid was returned: ${uuid}");
+        $this->assertValidUUID($response->json('userId'));
     }
 
     public function
@@ -91,11 +91,4 @@ class RegistrationTest extends FeatureTestCase
         ];
     }
 
-    private function isValidUuid(string $uuid) {
-        if (preg_match('/^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/', $uuid) !== 1) {
-            return false;
-        }
-
-        return true;
-    }
 }

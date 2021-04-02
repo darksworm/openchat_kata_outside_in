@@ -22,9 +22,9 @@ class RegistrationController extends Controller
     public function registerUser(UserRegistrationHTTPRequest $request): Response
     {
         $request = new UserRegistrationRequest(
-            $request->get('username'),
-            $request->get('password'),
-            $request->get('about'),
+            $request->username(),
+            $request->password(),
+            $request->about()
         );
 
         try {

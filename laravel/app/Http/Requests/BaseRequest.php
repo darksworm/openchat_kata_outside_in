@@ -18,4 +18,8 @@ abstract class BaseRequest extends FormRequest
     }
 
     abstract function failedValidationMessage();
+
+    abstract function rules(): array;
+
+    abstract function authorize(): bool;
 }
