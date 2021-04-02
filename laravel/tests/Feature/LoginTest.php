@@ -23,7 +23,7 @@ class LoginTest extends FeatureTestCase
     {
         $response = $this->post('/openchat/login', $badRequest);
         $response->assertStatus(400);
-        $this->assertEquals('Malformed request!', $response->getContent());
+        $this->assertEquals('Malformed request.', $response->getContent());
     }
 
     public function
@@ -31,7 +31,7 @@ class LoginTest extends FeatureTestCase
     {
         $response = $this->post('/openchat/login', ['username' => 'someone', 'password' => 'someonespassword']);
         $response->assertStatus(400);
-        $this->assertEquals('Invalid credentials!', $response->getContent());
+        $this->assertEquals('Invalid credentials.', $response->getContent());
     }
 
     public function
@@ -40,7 +40,7 @@ class LoginTest extends FeatureTestCase
         $this->post('/openchat/registration', ['username' => 'someone', 'password' => 'someonespassword', 'about' => 'about someone']);
         $response = $this->post('/openchat/login', ['username' => 'someone', 'password' => 'otherpassword']);
         $response->assertStatus(400);
-        $this->assertEquals('Invalid credentials!', $response->getContent());
+        $this->assertEquals('Invalid credentials.', $response->getContent());
     }
 
     public function

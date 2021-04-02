@@ -2,14 +2,16 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Notifications\Notifiable;
+use Eloquent;
+use Illuminate\Database\Eloquent\Model;
 use Jamesh\Uuid\HasUuid;
 
-class User extends Authenticatable
+/**
+ * @mixin Eloquent
+ */
+class User extends Model
 {
-    use HasFactory, Notifiable, HasUuid;
+    use HasUuid;
 
     protected $primaryKey = 'user_id';
 

@@ -31,6 +31,6 @@ class LoginHTTPRequest extends BaseRequest
 
     public function failedValidationMessage(): string
     {
-        return 'Malformed request!';
+        return 'Malformed request.';
     }
 }

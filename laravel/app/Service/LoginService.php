@@ -23,6 +23,10 @@ class LoginService
      */
     public function loginUser(string $username, string $password): User
     {
+        if (empty(trim($username)) || empty(trim($password))) {
+            throw new LoginFailException();
+        }
+
         $user = $this->userRepository->findByUsername($username);
 
         if (null === $user) {

@@ -21,14 +21,12 @@ class UserRepository implements IUserRepository
 
     public function userWithUsernameExists(string $username): bool
     {
-        $user = User::where('username', $username)
-            ->first();
-
-        return $user !== null;
+        return null !== $this->findByUsername($username);
     }
 
     function findByUsername(string $username): ?User
     {
-        throw new \RuntimeException("not implemented");
+        return User::where('username', $username)
+            ->first();
     }
 }
