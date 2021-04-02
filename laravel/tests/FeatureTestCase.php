@@ -17,8 +17,7 @@ class FeatureTestCase extends TestCase
 
     protected function tearDown(): void
     {
-        parent::tearDown();
-
         DB::rollback();
+        parent::tearDown();
     }
 }

@@ -1,6 +1,6 @@
 <?php
 
-use Illuminate\Http\Request;
+use App\Http\Controllers\RegistrationController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -14,6 +14,4 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::post('/registration', function (Request $req) {
-    return response('Passed post data does not match expected format', 400);
-});
+Route::post('/registration', [RegistrationController::class, 'registerUser']);
