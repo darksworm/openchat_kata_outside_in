@@ -15,4 +15,6 @@ interface IUserRepository
     function createUser(string $username, string $password, string $about): User;
 
     function userWithUsernameExists(string $username): bool;
+
+    function findByUsername(string $username): ?User;
 }

@@ -26,4 +26,9 @@ class UserRepository implements IUserRepository
 
         return $user !== null;
     }
+
+    function findByUsername(string $username): ?User
+    {
+        throw new \RuntimeException("not implemented");
+    }
 }
