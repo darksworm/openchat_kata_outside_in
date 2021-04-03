@@ -1,7 +1,7 @@
 <?php
 
 
-namespace Tests\Unit\Service;
+namespace Tests\Service;
 
 
 use App\DTO\UserRegistrationRequest;
@@ -20,23 +20,6 @@ class RegistrationServiceTest extends TestCase
     private IUserRepository $userRepository;
 
     private RegistrationService $registrationService;
-
-    protected function setUp(): void
-    {
-        parent::setUp();
-
-        $this->userRegistrationData = new UserRegistrationRequest('Alice', 'password', 'I like pies.');
-        $this->createdUser = new User();
-
-        $passwordHashService = $this->createMock(IPasswordHashService::class);
-        $this->userRepository = $this->createMock(IUserRepository::class);
-
-        $this->registrationService = new RegistrationService($this->userRepository, $passwordHashService);
-
-        $passwordHashService->expects($this->any())
-            ->method('hashForPassword')
-            ->will($this->returnValue('mockPassHash'));
-    }
 
     public function
     test_creates_user()
@@ -68,5 +51,22 @@ class RegistrationServiceTest extends TestCase
             ->willReturn(true);
 
         $this->registrationService->registerUser($this->userRegistrationData);
+    }
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->userRegistrationData = new UserRegistrationRequest('Alice', 'password', 'I like pies.');
+        $this->createdUser = new User();
+
+        $passwordHashService = $this->createMock(IPasswordHashService::class);
+        $this->userRepository = $this->createMock(IUserRepository::class);
+
+        $this->registrationService = new RegistrationService($this->userRepository, $passwordHashService);
+
+        $passwordHashService->expects($this->any())
+            ->method('hashForPassword')
+            ->will($this->returnValue('mockPassHash'));
     }
 }

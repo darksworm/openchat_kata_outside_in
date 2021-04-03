@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Unit\Service;
+namespace Tests\Service;
 
 use App\Exceptions\LoginFailException;
 use App\Models\User;
@@ -15,16 +15,6 @@ class LoginServiceTest extends TestCase
     private LoginService $loginService;
     private IPasswordHashService $passwordHashService;
     private IUserRepository $userRepository;
-
-    protected function setUp(): void
-    {
-        parent::setUp();
-
-        $this->passwordHashService = $this->createMock(IPasswordHashService::class);
-        $this->userRepository = $this->createMock(IUserRepository::class);
-
-        $this->loginService = new LoginService($this->userRepository, $this->passwordHashService);
-    }
 
     /**
      * @dataProvider randomCredentialsProvider
@@ -59,7 +49,7 @@ class LoginServiceTest extends TestCase
 
         $this->passwordHashService->expects($this->once())
             ->method('passwordMatchesHash')
-            ->with( "jibberish", "somelonghash")
+            ->with("jibberish", "somelonghash")
             ->willReturn(false);
 
         $this->expectException(LoginFailException::class);
@@ -103,5 +93,15 @@ class LoginServiceTest extends TestCase
             yield [$variant, "password"];
             yield ["password", $variant];
         }
+    }
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->passwordHashService = $this->createMock(IPasswordHashService::class);
+        $this->userRepository = $this->createMock(IUserRepository::class);
+
+        $this->loginService = new LoginService($this->userRepository, $this->passwordHashService);
     }
 }

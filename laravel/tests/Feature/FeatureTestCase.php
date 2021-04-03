@@ -1,10 +1,11 @@
 <?php
 
 
-namespace Tests;
+namespace Tests\Feature;
 
 
 use Illuminate\Support\Facades\DB;
+use Tests\TestCase;
 
 class FeatureTestCase extends TestCase
 {

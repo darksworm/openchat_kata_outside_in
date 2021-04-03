@@ -2,7 +2,6 @@
 
 namespace Tests\Feature;
 
-use Tests\FeatureTestCase;
 
 class RegistrationTest extends FeatureTestCase
 {

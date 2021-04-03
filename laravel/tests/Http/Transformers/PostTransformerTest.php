@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Unit\Http\Transformers;
+namespace Tests\Http\Transformers;
 
 use App\Http\Transformers\PostTransformer;
 use App\Models\Post;
@@ -29,7 +29,8 @@ class PostTransformerTest extends TestCase
     }
 }
 
-class MockPost extends Post {
+class MockPost extends Post
+{
     public $user_id;
     public $post_id;
     public $text;

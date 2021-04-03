@@ -5,7 +5,6 @@ namespace Tests\Feature;
 
 
 use DateTime;
-use Tests\FeatureTestCase;
 
 class CreatePostTest extends FeatureTestCase
 {
@@ -66,16 +65,6 @@ class CreatePostTest extends FeatureTestCase
         $this->assertRecentDateTime($response->json('dateTime'));
     }
 
-    public function badRequestDataProvider()
-    {
-        return [
-            [[]],
-            [[[]]],
-            [['post']],
-            [['te' => 't']]
-        ];
-    }
-
     private function assertValidDateTime(string $datetime)
     {
         return DateTime::createFromFormat("Y-m-d\TH:i:s\Z", $datetime) instanceof DateTime;
@@ -88,5 +77,15 @@ class CreatePostTest extends FeatureTestCase
         $now = new DateTime();
         $secondsBetween = $now->getTimestamp() - $then->getTimestamp();
         $this->assertLessThan(100000, $secondsBetween);
+    }
+
+    public function badRequestDataProvider()
+    {
+        return [
+            [[]],
+            [[[]]],
+            [['post']],
+            [['te' => 't']]
+        ];
     }
 }

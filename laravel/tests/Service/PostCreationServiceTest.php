@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Unit\Service;
+namespace Tests\Service;
 
 use App\DTO\PostCreationRequest;
 use App\Exceptions\InappropriateLanguageException;
@@ -17,16 +17,6 @@ class PostCreationServiceTest extends TestCase
     private IUserRepository $userRepository;
 
     private PostCreationService $postCreationService;
-
-    protected function setUp(): void
-    {
-        parent::setUp();
-
-        $this->userRepository = $this->createMock(IUserRepository::class);
-        $this->postRepository = $this->createMock(IPostRepository::class);
-
-        $this->postCreationService = new PostCreationService($this->userRepository, $this->postRepository);
-    }
 
     public function
     test_throws_exception_when_nonexistant_user_id_passed()
@@ -93,5 +83,15 @@ class PostCreationServiceTest extends TestCase
             ['eleICe cREamphant'],
             ['I like to eat oranges every day']
         ];
+    }
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->userRepository = $this->createMock(IUserRepository::class);
+        $this->postRepository = $this->createMock(IPostRepository::class);
+
+        $this->postCreationService = new PostCreationService($this->userRepository, $this->postRepository);
     }
 }

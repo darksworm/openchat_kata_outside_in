@@ -4,8 +4,6 @@
 namespace Tests\Feature;
 
 
-use Tests\FeatureTestCase;
-
 class LoginTest extends FeatureTestCase
 {
     public function
