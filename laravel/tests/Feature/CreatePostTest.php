@@ -8,6 +8,14 @@ use DateTime;
 
 class CreatePostTest extends FeatureTestCase
 {
+    public function
+    test_route_is_connected()
+    {
+        $response = $this->post('/users/asdfasdf/timeline');
+        $this->assertNotEquals(404, $response->status());
+        $response->assertHeader('Access-Control-Allow-Origin', '*');
+    }
+
     /**
      * @dataProvider badRequestDataProvider
      */

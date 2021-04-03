@@ -11,6 +11,7 @@ class LoginTest extends FeatureTestCase
     {
         $response = $this->post('/login');
         $this->assertNotEquals(404, $response->status());
+        $response->assertHeader('Access-Control-Allow-Origin', '*');
     }
 
     /**
