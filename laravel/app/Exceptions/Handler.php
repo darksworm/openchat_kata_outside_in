@@ -3,7 +3,7 @@
 namespace App\Exceptions;
 
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
-use Throwable;
+use Symfony\Component\HttpKernel\Exception\HttpExceptionInterface;
 
 class Handler extends ExceptionHandler
 {
@@ -27,15 +27,30 @@ class Handler extends ExceptionHandler
         'password_confirmation',
     ];
 
-    /**
-     * Register the exception handling callbacks for the application.
-     *
-     * @return void
-     */
-    public function register()
+    protected function renderHttpException(HttpExceptionInterface $exception)
     {
-        $this->reportable(function (Throwable $e) {
-            //
-        });
+        if (app()->environment('testing')) {
+            return response()->view(
+                'errors.500',
+                [
+                    'stackTrace' => $exception->getTraceAsString(),
+                    'error' => $exception->getMessage()
+                ],
+                $exception->getStatusCode()
+            );
+        }
+
+        if ($exception->getStatusCode() == 500) {
+            return response()->view(
+                'errors.500',
+                [
+                    'stackTrace' => $exception->getTraceAsString(),
+                    'error' => $exception->getMessage()
+                ],
+                500
+            );
+        }
+
+        return parent::renderHttpException($exception);
     }
 }

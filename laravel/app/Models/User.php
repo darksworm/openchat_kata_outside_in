@@ -13,6 +13,7 @@ class User extends Model
 {
     use HasUuid;
 
+    protected $table = 'user';
     protected $primaryKey = 'user_id';
 
     /**

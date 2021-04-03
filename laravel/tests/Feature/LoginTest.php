@@ -11,7 +11,7 @@ class LoginTest extends FeatureTestCase
     public function
     test_route_is_connected()
     {
-        $response = $this->post('/openchat/login');
+        $response = $this->post('/login');
         $this->assertNotEquals(404, $response->status());
     }
 
@@ -21,7 +21,7 @@ class LoginTest extends FeatureTestCase
     public function
     test_returns_400_on_malformed_request($badRequest)
     {
-        $response = $this->post('/openchat/login', $badRequest);
+        $response = $this->post('/login', $badRequest);
         $response->assertStatus(400);
         $this->assertEquals('Malformed request.', $response->getContent());
     }
@@ -29,7 +29,7 @@ class LoginTest extends FeatureTestCase
     public function
     test_returns_400_when_user_doesnt_exist()
     {
-        $response = $this->post('/openchat/login', ['username' => 'someone', 'password' => 'someonespassword']);
+        $response = $this->post('/login', ['username' => 'someone', 'password' => 'someonespassword']);
         $response->assertStatus(400);
         $this->assertEquals('Invalid credentials.', $response->getContent());
     }
@@ -37,8 +37,8 @@ class LoginTest extends FeatureTestCase
     public function
     test_returns_400_for_incorrect_password()
     {
-        $this->post('/openchat/registration', ['username' => 'someone', 'password' => 'someonespassword', 'about' => 'about someone']);
-        $response = $this->post('/openchat/login', ['username' => 'someone', 'password' => 'otherpassword']);
+        $this->post('/users', ['username' => 'someone', 'password' => 'someonespassword', 'about' => 'about someone']);
+        $response = $this->post('/login', ['username' => 'someone', 'password' => 'otherpassword']);
         $response->assertStatus(400);
         $this->assertEquals('Invalid credentials.', $response->getContent());
     }
@@ -46,9 +46,9 @@ class LoginTest extends FeatureTestCase
     public function
     test_login_successful_for_registered_user()
     {
-        $this->post('/openchat/registration', ['username' => 'someone', 'password' => 'someonespassword', 'about' => 'about someone']);
+        $this->post('/users', ['username' => 'someone', 'password' => 'someonespassword', 'about' => 'about someone']);
 
-        $response = $this->post('/openchat/login', ['username' => 'someone', 'password' => 'someonespassword']);
+        $response = $this->post('/login', ['username' => 'someone', 'password' => 'someonespassword']);
         $response->assertStatus(200);
 
         $response->assertJsonFragment([

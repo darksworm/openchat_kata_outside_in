@@ -2,7 +2,7 @@
 
 namespace Tests\Unit\Service;
 
-use App\Service\LoginFailException;
+use App\Exceptions\LoginFailException;
 use App\Models\User;
 use App\Repository\IUserRepository;
 use App\Service\IPasswordHashService;

@@ -29,8 +29,11 @@ class LoginHTTPRequest extends BaseRequest
         return true;
     }
 
-    public function failedValidationMessage(): string
+    public function messages()
     {
-        return 'Malformed request.';
+        return [
+            'username.required' => 'Malformed request.',
+            'password.required' => 'Malformed request.'
+        ];
     }
 }

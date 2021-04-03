@@ -11,7 +11,6 @@ class FeatureTestCase extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-
         DB::beginTransaction();
     }
 

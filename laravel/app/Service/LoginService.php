@@ -4,6 +4,7 @@
 namespace App\Service;
 
 
+use App\Exceptions\LoginFailException;
 use App\Models\User;
 use App\Repository\IUserRepository;
 

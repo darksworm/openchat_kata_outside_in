@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Service;
+namespace Tests\Unit\Service;
 
 use App\Service\SHA512PasswordHashService;
 use PHPUnit\Framework\TestCase;

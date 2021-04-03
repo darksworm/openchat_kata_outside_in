@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 
 
 use App\Http\Requests\LoginHTTPRequest;
-use App\Service\LoginFailException;
+use App\Exceptions\LoginFailException;
 use App\Service\LoginService;
 
 class LoginController extends Controller

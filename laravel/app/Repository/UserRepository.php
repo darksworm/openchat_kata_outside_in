@@ -24,9 +24,14 @@ class UserRepository implements IUserRepository
         return null !== $this->findByUsername($username);
     }
 
-    function findByUsername(string $username): ?User
+    public function findByUsername(string $username): ?User
     {
         return User::where('username', $username)
             ->first();
+    }
+
+    public function userWithIdExists(string $userId): bool
+    {
+        return null !== User::find($userId);
     }
 }

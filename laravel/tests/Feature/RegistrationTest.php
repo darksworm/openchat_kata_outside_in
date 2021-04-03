@@ -19,7 +19,7 @@ class RegistrationTest extends FeatureTestCase
     public function
     test_returns_error_when_incorrect_data_provided(array $registrationRequest)
     {
-        $response = $this->post('/openchat/registration', $registrationRequest);
+        $response = $this->post('/users', $registrationRequest);
 
         $response->assertStatus(400);
         $this->assertEquals('Passed post data does not match expected format', $response->getContent());
@@ -28,7 +28,7 @@ class RegistrationTest extends FeatureTestCase
     public function
     test_returns_201_and_user_info_when_user_registered()
     {
-        $response = $this->post('/openchat/registration', self::ALICE_REGISTRATION_REQUEST);
+        $response = $this->post('/users', self::ALICE_REGISTRATION_REQUEST);
 
         $response->assertStatus(201);
 
@@ -45,10 +45,10 @@ class RegistrationTest extends FeatureTestCase
     public function
     test_returns_400_when_registering_duplicate_username()
     {
-        $response = $this->post('/openchat/registration', self::ALICE_REGISTRATION_REQUEST);
+        $response = $this->post('/users', self::ALICE_REGISTRATION_REQUEST);
         $response->assertStatus(201);
 
-        $response = $this->post('/openchat/registration', self::ALICE_REGISTRATION_REQUEST);
+        $response = $this->post('/users', self::ALICE_REGISTRATION_REQUEST);
         $response->assertStatus(400);
         $this->assertEquals('Username already in use.', $response->getContent());
     }

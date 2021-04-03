@@ -1,7 +1,7 @@
 <?php
 
 
-namespace App\Service;
+namespace App\Exceptions;
 
 
 class LoginFailException extends \RuntimeException

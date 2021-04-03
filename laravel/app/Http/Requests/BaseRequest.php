@@ -13,11 +13,9 @@ abstract class BaseRequest extends FormRequest
 {
     protected function failedValidation(Validator $validator)
     {
-        $response = new Response($this->failedValidationMessage(), 400);
+        $response = new Response($validator->errors()->first(), 400);
         throw new ValidationException($validator, $response);
     }
-
-    abstract function failedValidationMessage();
 
     abstract function rules(): array;
 
