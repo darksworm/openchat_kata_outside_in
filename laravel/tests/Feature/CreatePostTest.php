@@ -47,7 +47,7 @@ class CreatePostTest extends FeatureTestCase
     test_returns_400_when_inappropriate_language_used_doesnt_exist()
     {
         $userResponse = $this->post('/users', ['username' => 'someone', 'password' => 'someonespassword', 'about' => 'about someone']);
-        $userId = $userResponse->json('userId');
+        $userId = $userResponse->json('id');
 
         $response = $this->post("/users/${userId}/timeline", ['text' => 'I like orAnges and elepHANTS!']);
 
@@ -59,7 +59,7 @@ class CreatePostTest extends FeatureTestCase
     test_returns_201_when_post_creation_successful()
     {
         $userResponse = $this->post('/users', ['username' => 'someone', 'password' => 'someonespassword', 'about' => 'about someone']);
-        $userId = $userResponse->json('userId');
+        $userId = $userResponse->json('id');
 
         $response = $this->post("/users/${userId}/timeline", ['text' => 'my post text']);
 

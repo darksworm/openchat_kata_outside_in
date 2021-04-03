@@ -15,7 +15,7 @@ class UserTransformerTest extends TestCase
 
         $transformed = UserTransformer::transform($user);
 
-        $this->assertEquals($transformed['userId'], $user->id);
+        $this->assertEquals($transformed['id'], $user->id);
         $this->assertEquals($transformed['username'], $user->username);
         $this->assertEquals($transformed['about'], $user->about);
     }

@@ -39,14 +39,13 @@ class RegistrationTest extends FeatureTestCase
 
         $response->assertStatus(201);
 
-        $response->assertJsonStructure(['username', 'about', 'userId']);
+        $response->assertJsonStructure(['username', 'about', 'id']);
         $response->assertJsonFragment([
             'username' => self::ALICE_REGISTRATION_REQUEST['username'],
             'about' => self::ALICE_REGISTRATION_REQUEST['about']
         ]);
 
-        $uuid = $response->json('userId');
-        $this->assertValidUUID($response->json('userId'));
+        $this->assertValidUUID($response->json('id'));
     }
 
     public function

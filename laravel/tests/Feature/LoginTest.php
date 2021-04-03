@@ -55,7 +55,7 @@ class LoginTest extends FeatureTestCase
             'about' => 'about someone'
         ]);
 
-        $this->assertValidUUID($response->json('userId'));
+        $this->assertValidUUID($response->json('id'));
     }
 
     public function badLoginRequestProvider()

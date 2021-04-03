@@ -10,7 +10,7 @@ class UserTransformer
     public static function transform(User $user): array
     {
         return [
-            'userId' => $user->user_id,
+            'id' => $user->user_id,
             'username' => $user->username,
             'about' => $user->about
         ];
