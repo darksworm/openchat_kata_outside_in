@@ -1,0 +1,3 @@
+[submodule "react"]
+	path = react
+	url = https://github.com/sandromancuso/cleancoders_openchat_webclient.git
