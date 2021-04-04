@@ -23,12 +23,11 @@ class FollowingsController extends Controller
     {
         try {
             $this->followingsService->createFollowing($request->followerId(), $request->followeeId());
+            return response("", 201);
         } catch (UserDoesNotExistException $e) {
             return response("User with id {$e->getUserId()} does not exist.", 400);
         } catch (FollowingAlreadyExistsException) {
             return response("Following already exists.", 400);
         }
-
-        return response("", 201);
     }
 }
