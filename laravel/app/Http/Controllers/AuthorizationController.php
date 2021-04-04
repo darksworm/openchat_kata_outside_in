@@ -6,7 +6,7 @@ namespace App\Http\Controllers;
 
 use App\DTO\UserRegistrationRequest;
 use App\Exceptions\DuplicateUsernameException;
-use App\Exceptions\LoginFailException;
+use App\Exceptions\Login\LoginFailException;
 use App\Http\Requests\LoginHTTPRequest;
 use App\Http\Requests\UserRegistrationHTTPRequest;
 use App\Http\Transformers\UserTransformer;

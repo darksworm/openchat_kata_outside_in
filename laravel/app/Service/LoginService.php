@@ -4,7 +4,9 @@
 namespace App\Service;
 
 
-use App\Exceptions\LoginFailException;
+use App\Exceptions\Login\BadPasswordException;
+use App\Exceptions\Login\EmptyCredentialsException;
+use App\Exceptions\Login\LoginFailException;
 use App\Models\User;
 use App\Repository\IUserRepository;
 
@@ -31,12 +33,12 @@ class LoginService
     }
 
     /**
-     * @throws LoginFailException
+     * @throws EmptyCredentialsException
      */
     private function validateCredentialsNotEmpty(string $username, string $password): void
     {
         if (empty(trim($username)) || empty(trim($password))) {
-            throw new LoginFailException();
+            throw new EmptyCredentialsException();
         }
     }
 
@@ -54,12 +56,12 @@ class LoginService
     }
 
     /**
-     * @throws LoginFailException
+     * @throws BadPasswordException
      */
     private function validatePassword(string $password, User $user): void
     {
         if (false === $this->passwordHashService->passwordMatchesHash($password, $user->password)) {
-            throw new LoginFailException();
+            throw new BadPasswordException();
         }
     }
 }

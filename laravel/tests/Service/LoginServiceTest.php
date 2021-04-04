@@ -2,7 +2,9 @@
 
 namespace Tests\Service;
 
-use App\Exceptions\LoginFailException;
+use App\Exceptions\Login\BadPasswordException;
+use App\Exceptions\Login\EmptyCredentialsException;
+use App\Exceptions\Login\LoginFailException;
 use App\Models\User;
 use App\Repository\IUserRepository;
 use App\Service\IPasswordHashService;
@@ -32,7 +34,7 @@ class LoginServiceTest extends TestCase
     public function
     test_empty_credentials_arent_valid(string $maybeEmptyUsername, string $maybeEmptyPassword)
     {
-        $this->expectException(LoginFailException::class);
+        $this->expectException(EmptyCredentialsException::class);
         $this->loginService->loginUser($maybeEmptyUsername, $maybeEmptyPassword);
     }
 
@@ -52,7 +54,7 @@ class LoginServiceTest extends TestCase
             ->with("jibberish", "somelonghash")
             ->willReturn(false);
 
-        $this->expectException(LoginFailException::class);
+        $this->expectException(BadPasswordException::class);
         $this->loginService->loginUser("john", "jibberish");
     }
 
@@ -92,6 +94,7 @@ class LoginServiceTest extends TestCase
         foreach ($emptyCredentialVariants as $variant) {
             yield [$variant, "password"];
             yield ["password", $variant];
+            yield [$variant, $variant];
         }
     }
 

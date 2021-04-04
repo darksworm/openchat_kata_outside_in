@@ -43,14 +43,4 @@ class User extends Model
     protected $hidden = [
         'password',
     ];
-
-    public function followees()
-    {
-        return $this->hasMany(self::class, 'follower_id', 'user_id');
-    }
-
-    public function followers()
-    {
-        return $this->hasMany(self::class, 'followee_id', 'user_id');
-    }
 }

@@ -7,7 +7,6 @@
     <testsuites>
         <testsuite name="Unit">
             <directory suffix="Test.php">./tests</directory>
-            <exclude>./tests/Feature/*.php</exclude>
             <exclude>
                 <directory suffix=".php">./tests/Feature</directory>
             </exclude>
