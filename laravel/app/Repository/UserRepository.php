@@ -4,6 +4,7 @@
 namespace App\Repository;
 
 use App\Models\User;
+use Illuminate\Support\Collection;
 
 class UserRepository implements IUserRepository
 {
@@ -33,5 +34,11 @@ class UserRepository implements IUserRepository
     public function userWithIdExists(string $userId): bool
     {
         return null !== User::find($userId);
+    }
+
+    function getUsersById(string ...$userIds): Collection
+    {
+        return User::whereIn('user_id', $userIds)
+            ->get();
     }
 }

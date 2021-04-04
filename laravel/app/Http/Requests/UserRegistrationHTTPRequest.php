@@ -19,11 +19,6 @@ class UserRegistrationHTTPRequest extends BaseRequest
         return $this->get('about');
     }
 
-    public function authorize(): bool
-    {
-        return true;
-    }
-
     public function rules(): array
     {
         return [
@@ -36,9 +31,7 @@ class UserRegistrationHTTPRequest extends BaseRequest
     public function messages()
     {
         return [
-            'username.required' => 'Passed post data does not match expected format',
-            'password.required' => 'Passed post data does not match expected format',
-            'about.required' => 'Passed post data does not match expected format',
+            '*' => 'Passed post data does not match expected format'
         ];
     }
 }

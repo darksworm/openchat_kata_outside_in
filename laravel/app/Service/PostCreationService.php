@@ -24,7 +24,7 @@ class PostCreationService
     public function createPost(PostCreationRequest $postRequest)
     {
         if (false === $this->userRepository->userWithIdExists($postRequest->getUserId())) {
-            throw new UserDoesNotExistException();
+            throw new UserDoesNotExistException($postRequest->getUserId());
         }
 
         if (false === $this->isLanguageAppropriate($postRequest->getText())) {

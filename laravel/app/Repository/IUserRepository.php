@@ -4,8 +4,9 @@
 namespace App\Repository;
 
 
+use App\Exceptions\DuplicateUsernameException;
 use App\Models\User;
-use App\Service\DuplicateUsernameException;
+use Illuminate\Support\Collection;
 
 interface IUserRepository
 {
@@ -19,4 +20,6 @@ interface IUserRepository
     function findByUsername(string $username): ?User;
 
     function userWithIdExists(string $userId) : bool;
+
+    function getUsersById(string ...$userIds): Collection;
 }

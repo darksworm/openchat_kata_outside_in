@@ -23,17 +23,4 @@ class LoginHTTPRequest extends BaseRequest
             'password' => 'required|string'
         ];
     }
-
-    public function authorize(): bool
-    {
-        return true;
-    }
-
-    public function messages()
-    {
-        return [
-            'username.required' => 'Malformed request.',
-            'password.required' => 'Malformed request.'
-        ];
-    }
 }

@@ -34,15 +34,9 @@ class CreatePostHTTPRequest extends BaseRequest
 
     public function messages(): array
     {
-        return [
+        return parent::messages() + [
             'userId.required' => 'Invalid user id.',
             'userId.uuid' => 'Invalid user id.',
-            'text.required' => 'Malformed request.'
         ];
-    }
-
-    public function authorize(): bool
-    {
-        return true;
     }
 }

@@ -5,6 +5,7 @@ namespace App\Service;
 
 
 use App\DTO\UserRegistrationRequest;
+use App\Exceptions\DuplicateUsernameException;
 use App\Models\User;
 use App\Repository\IUserRepository;
 

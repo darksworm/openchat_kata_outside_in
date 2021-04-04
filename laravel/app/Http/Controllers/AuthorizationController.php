@@ -5,11 +5,11 @@ namespace App\Http\Controllers;
 
 
 use App\DTO\UserRegistrationRequest;
+use App\Exceptions\DuplicateUsernameException;
 use App\Exceptions\LoginFailException;
 use App\Http\Requests\LoginHTTPRequest;
 use App\Http\Requests\UserRegistrationHTTPRequest;
 use App\Http\Transformers\UserTransformer;
-use App\Service\DuplicateUsernameException;
 use App\Service\LoginService;
 use App\Service\RegistrationService;
 use Illuminate\Http\Response;

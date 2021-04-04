@@ -2,10 +2,13 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Eloquent;
 use Illuminate\Database\Eloquent\Model;
 use Jamesh\Uuid\HasUuid;
 
+/**
+ * @mixin Eloquent
+ */
 class Post extends Model
 {
     use HasUuid;

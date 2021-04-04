@@ -19,5 +19,15 @@ abstract class BaseRequest extends FormRequest
 
     abstract function rules(): array;
 
-    abstract function authorize(): bool;
+    public function authorize(): bool
+    {
+        return true;
+    }
+
+    public function messages()
+    {
+        return [
+            '*' => 'Malformed request.'
+        ];
+    }
 }

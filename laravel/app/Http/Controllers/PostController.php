@@ -10,6 +10,7 @@ use App\Exceptions\UserDoesNotExistException;
 use App\Http\Requests\CreatePostHTTPRequest;
 use App\Http\Transformers\PostTransformer;
 use App\Service\PostCreationService;
+use Illuminate\Http\Response;
 
 class PostController extends Controller
 {
@@ -20,7 +21,7 @@ class PostController extends Controller
         $this->postCreationService = $postCreationService;
     }
 
-    public function createPost(CreatePostHTTPRequest $request)
+    public function createPost(CreatePostHTTPRequest $request): Response
     {
         $creationRequest = new PostCreationRequest($request->userId(), $request->text());
 
