@@ -15,7 +15,11 @@ class RegistrationTest extends FeatureTestCase
     test_route_is_connected()
     {
         $response = $this->post('/users');
-        $this->assertNotEquals(404, $response->status());
+        $this->assertNotContains(
+            needle: $response->getStatusCode(),
+            haystack: [404, 405],
+            message: "Expected endpoint not to return {$response->getStatusCode()}"
+        );
         $response->assertHeader('Access-Control-Allow-Origin', '*');
     }
 

@@ -6,6 +6,7 @@ namespace App\Service;
 
 use App\Exceptions\UserDoesNotExistException;
 use App\Repository\IUserRepository;
+use Illuminate\Support\Collection;
 
 class UserService
 {
@@ -29,5 +30,10 @@ class UserService
                 throw new UserDoesNotExistException($id);
             }
         }
+    }
+
+    public function getAllUsers(): Collection
+    {
+        return $this->userRepository->getAllUsers();
     }
 }

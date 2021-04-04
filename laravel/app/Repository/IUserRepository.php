@@ -15,7 +15,9 @@ interface IUserRepository
 
     function findByUsername(string $username): ?User;
 
-    function userWithIdExists(string $userId) : bool;
+    function userWithIdExists(string $userId): bool;
 
     function getUsersById(string ...$userIds): Collection;
+
+    function getAllUsers(): Collection;
 }

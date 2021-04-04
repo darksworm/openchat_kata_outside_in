@@ -16,7 +16,11 @@ class FollowUserTest extends FeatureTestCase
     test_endpoint_is_connected()
     {
         $response = $this->post('/followings');
-        $this->assertNotEquals(404, $response->getStatusCode());
+        $this->assertNotContains(
+            needle: $response->getStatusCode(),
+            haystack: [404, 405],
+            message: "Expected endpoint not to return {$response->getStatusCode()}"
+        );
         $response->assertHeader('Access-Control-Allow-Origin', '*');
     }
 

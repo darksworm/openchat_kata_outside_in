@@ -3,6 +3,7 @@
 namespace Tests\Service;
 
 use App\Exceptions\UserDoesNotExistException;
+use App\Models\User;
 use App\Repository\IUserRepository;
 use App\Service\UserService;
 use PHPUnit\Framework\TestCase;
@@ -46,5 +47,21 @@ class UserServiceTest extends TestCase
             ->willReturn(collect([['user_id' => 'user_id'], ['user_id' => 'dank']]));
 
         $this->userService->validateUsersExist('user_id', 'dank');
+    }
+
+    public function
+    test_getAllUsers_delegates_to_repository()
+    {
+        $expectedUsers = collect([
+            new User(),
+            new User(),
+        ]);
+
+        $this->userRepository->expects($this->once())
+            ->method('getAllUsers')
+            ->willReturn($expectedUsers);
+
+        $actualUsers = $this->userService->getAllUsers();
+        $this->assertEquals($actualUsers, $expectedUsers);
     }
 }

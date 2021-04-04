@@ -41,4 +41,9 @@ class UserRepository implements IUserRepository
         return User::whereIn('user_id', $userIds)
             ->get();
     }
+
+    function getAllUsers(): Collection
+    {
+        return User::all();
+    }
 }

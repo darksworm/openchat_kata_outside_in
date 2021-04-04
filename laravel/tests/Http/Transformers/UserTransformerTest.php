@@ -27,6 +27,17 @@ class UserTransformerTest extends TestCase
 
         $this->assertArrayNotHasKey(key: 'password', array: $transformed);
     }
+
+    public function
+    test_copies_id_username_and_about_via_transformAll()
+    {
+        $user = new MockUser();
+        $transformed = UserTransformer::transformAll($user);
+
+        $this->assertEquals($transformed[0]['id'], $user->user_id);
+        $this->assertEquals($transformed[0]['username'], $user->username);
+        $this->assertEquals($transformed[0]['about'], $user->about);
+    }
 }
 
 class MockUser extends User

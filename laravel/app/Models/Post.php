@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Eloquent;
 use Illuminate\Database\Eloquent\Model;
 use Jamesh\Uuid\HasUuid;
@@ -11,6 +12,8 @@ use Jamesh\Uuid\HasUuid;
  * @property string user_id
  * @property string post_id
  * @property string text
+ * @property Carbon created_at
+ * @property Carbon updated_at
  */
 class Post extends Model
 {

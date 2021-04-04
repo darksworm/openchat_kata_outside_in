@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Eloquent;
 use Illuminate\Database\Eloquent\Model;
 use Jamesh\Uuid\HasUuid;
@@ -12,6 +13,8 @@ use Jamesh\Uuid\HasUuid;
  * @property string username
  * @property string password
  * @property string about
+ * @property Carbon created_at
+ * @property Carbon updated_at
  */
 class User extends Model
 {

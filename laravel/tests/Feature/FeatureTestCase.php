@@ -20,4 +20,20 @@ class FeatureTestCase extends TestCase
         DB::rollback();
         parent::tearDown();
     }
+
+    protected function randomString(int $length = 16): string
+    {
+        $allowedChars = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+
+        $seed = str_repeat(
+            string: $allowedChars,
+            times: ceil($length / strlen($allowedChars))
+        );
+
+        return substr(
+            string: str_shuffle($seed),
+            offset: 1,
+            length: $length
+        );
+    }
 }
