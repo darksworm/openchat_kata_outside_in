@@ -2,7 +2,6 @@
 
 namespace Tests\Service;
 
-use App\Exceptions\CannotFollowSelfException;
 use App\Exceptions\FollowingAlreadyExistsException;
 use App\Exceptions\UserDoesNotExistException;
 use App\Models\Following;
@@ -67,14 +66,6 @@ class FollowingsServiceTest extends TestCase
             ->willReturn(true);
 
         $this->followingsService->createFollowing($followerId, $followeeId);
-    }
-
-    public function
-    test_throws_when_trying_to_follow_self()
-    {
-        $this->expectException(CannotFollowSelfException::class);
-        $followerId = Str::uuid()->toString();
-        $this->followingsService->createFollowing($followerId, $followerId);
     }
 
     public function

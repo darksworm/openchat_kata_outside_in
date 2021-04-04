@@ -18,7 +18,13 @@ class CreateFollowingTable extends Migration
                     ->on('user')
                     ->onDelete('cascade');
             }
+
+            $table->unique($columns);
         });
+
+        DB::statement(
+            'ALTER TABLE following ADD CONSTRAINT cant_follow_self CHECK (follower_id <> followee_id)'
+        );
     }
 
     public function down()

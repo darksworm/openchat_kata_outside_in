@@ -20,7 +20,14 @@ class CreateFollowingHTTPRequest extends BaseRequest
     {
         return [
             'followerId' => 'required|uuid',
-            'followeeId' => 'required|uuid',
+            'followeeId' => 'required|uuid|different:followerId',
         ];
+    }
+
+    function messages()
+    {
+        return parent::messages() + [
+                'followeeId.different' => 'You cannot follow yourself.'
+            ];
     }
 }
