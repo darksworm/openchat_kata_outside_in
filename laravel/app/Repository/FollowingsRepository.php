@@ -5,6 +5,7 @@ namespace App\Repository;
 
 
 use App\Models\Following;
+use Illuminate\Support\Collection;
 
 class FollowingsRepository implements IFollowingsRepository
 {
@@ -23,5 +24,14 @@ class FollowingsRepository implements IFollowingsRepository
         $following->save();
 
         return $following;
+    }
+
+    function followeesForUser(string $followerId): Collection
+    {
+        return Following::with(['followee'])
+            ->where('follower_id', $followerId)
+            ->get()->map(function (Following $f) {
+                return $f->followee()->first();
+            });
     }
 }

@@ -19,24 +19,15 @@ class CreatePostHTTPRequest extends BaseRequest
     public function rules(): array
     {
         return [
-            'userId' => 'required|uuid',
-            'text' => 'required|string'
+            'userId' => static::REQUIRED_UUID,
+            'text' => static::REQUIRED_STRING
         ];
-    }
-
-    public function all($keys = null): array
-    {
-        return array_merge(
-            parent::all($keys),
-            ['userId' => $this->route('userId')]
-        );
     }
 
     public function messages(): array
     {
         return parent::messages() + [
-            'userId.required' => 'Invalid user id.',
-            'userId.uuid' => 'Invalid user id.',
+                'userId.*' => 'Invalid user id.'
         ];
     }
 }

@@ -8,6 +8,7 @@ use App\Exceptions\FollowingAlreadyExistsException;
 use App\Exceptions\UserDoesNotExistException;
 use App\Models\Following;
 use App\Repository\IFollowingsRepository;
+use Illuminate\Support\Collection;
 
 class FollowingsService
 {
@@ -30,6 +31,15 @@ class FollowingsService
         $this->validateFollowingDoesNotExist($followerId, $followeeId);
 
         return $this->followingsRepository->createFollowing($followerId, $followeeId);
+    }
+
+    /**
+     * @throws UserDoesNotExistException
+     */
+    public function getFolloweesForUser(string $followerId): Collection
+    {
+        $this->userService->validateUsersExist($followerId);
+        return $this->followingsRepository->followeesForUser($followerId);
     }
 
     /**

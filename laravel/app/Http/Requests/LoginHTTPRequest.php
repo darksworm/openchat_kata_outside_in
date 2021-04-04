@@ -19,8 +19,8 @@ class LoginHTTPRequest extends BaseRequest
     public function rules(): array
     {
         return [
-            'username' => 'required|string',
-            'password' => 'required|string'
+            'username' => static::REQUIRED_STRING,
+            'password' => static::REQUIRED_STRING
         ];
     }
 }

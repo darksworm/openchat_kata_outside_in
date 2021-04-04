@@ -22,13 +22,13 @@ class UserRegistrationHTTPRequest extends BaseRequest
     public function rules(): array
     {
         return [
-            'username' => 'required|string',
-            'password' => 'required|string',
-            'about' => 'required|string',
+            'username' => static::REQUIRED_STRING,
+            'password' => static::REQUIRED_STRING,
+            'about' => static::REQUIRED_STRING,
         ];
     }
 
-    public function messages()
+    public function messages(): array
     {
         return [
             '*' => 'Passed post data does not match expected format'

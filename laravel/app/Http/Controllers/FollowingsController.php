@@ -7,6 +7,8 @@ namespace App\Http\Controllers;
 use App\Exceptions\FollowingAlreadyExistsException;
 use App\Exceptions\UserDoesNotExistException;
 use App\Http\Requests\CreateFollowingHTTPRequest;
+use App\Http\Requests\GetFolloweesHTTPRequest;
+use App\Http\Transformers\UserTransformer;
 use App\Service\FollowingsService;
 use Illuminate\Http\Response;
 
@@ -28,6 +30,17 @@ class FollowingsController extends Controller
             return response("User with id {$e->getUserId()} does not exist.", 400);
         } catch (FollowingAlreadyExistsException) {
             return response("Following already exists.", 400);
+        }
+    }
+
+    public function getFollowees(GetFolloweesHTTPRequest $request): Response
+    {
+        try {
+            $followees = $this->followingsService->getFolloweesForUser($request->followerId());
+            $transformed = UserTransformer::transformAll(...$followees);
+            return response($transformed, 200);
+        } catch (UserDoesNotExistException $e) {
+            return response("User with id {$e->getUserId()} does not exist.", 400);
         }
     }
 }

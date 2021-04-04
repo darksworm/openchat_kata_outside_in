@@ -23,13 +23,8 @@ class Following extends Pivot
         'followee_id'
     ];
 
-    public function follower(): BelongsTo
-    {
-        return $this->belongsTo(User::class, 'user_id', 'follower_id');
-    }
-
     public function followee(): BelongsTo
     {
-        return $this->belongsTo(User::class, 'user_id', 'followee_id');
+        return $this->belongsTo(User::class, 'followee_id', 'user_id');
     }
 }

@@ -12,4 +12,6 @@ Route::post('/login', [AuthorizationController::class, 'loginUser']);
 
 Route::post('/users/{userId}/timeline', [PostController::class, 'createPost']);
 Route::get('/users', [UserController::class, 'getAllUsers']);
+
 Route::post('/followings', [FollowingsController::class, 'createFollowing']);
+Route::get('/followings/{followerId}/followees', [FollowingsController::class, 'getFollowees']);

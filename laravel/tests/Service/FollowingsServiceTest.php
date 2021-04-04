@@ -5,6 +5,7 @@ namespace Tests\Service;
 use App\Exceptions\FollowingAlreadyExistsException;
 use App\Exceptions\UserDoesNotExistException;
 use App\Models\Following;
+use App\Models\User;
 use App\Repository\IFollowingsRepository;
 use App\Service\FollowingsService;
 use App\Service\UserService;
@@ -92,6 +93,41 @@ class FollowingsServiceTest extends TestCase
 
         $createdFollowing = $this->followingsService->createFollowing($followerId, $followeeId);
         $this->assertEquals($following, $createdFollowing);
+    }
+
+    public function
+    test_throws_when_trying_to_get_followees_for_non_existent_user()
+    {
+        $this->expectException(UserDoesNotExistException::class);
+
+        $nonExistentUserId = Str::uuid();
+
+        $this->userService->expects($this->once())
+            ->method('validateUsersExist')
+            ->with($nonExistentUserId)
+            ->willThrowException(new UserDoesNotExistException($nonExistentUserId));
+
+        $this->followingsService->getFolloweesForUser($nonExistentUserId);
+    }
+
+    public function
+    test_returns_followed_users()
+    {
+        $expectedUsers = collect([new User(), new User()]);
+        $userId = Str::uuid();
+
+        $this->userService->expects($this->once())
+            ->method('validateUsersExist')
+            ->with($userId);
+
+        $this->followingsRepository->expects($this->once())
+            ->method('followeesForUser')
+            ->with($userId)
+            ->willReturn($expectedUsers);
+
+        $actualUsers = $this->followingsService->getFolloweesForUser($userId);
+
+        $this->assertEquals($actualUsers, $expectedUsers);
     }
 
     public function missingUserStateProvider(): array
