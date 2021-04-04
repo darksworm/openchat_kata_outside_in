@@ -8,8 +8,7 @@ use RuntimeException;
 
 class SHA512PasswordHashService implements IPasswordHashService
 {
-
-    function hashForPassword(string $password): string
+    function hash(string $password): string
     {
         if (empty(trim($password))) {
             throw new RuntimeException('Cannot hash empty password');

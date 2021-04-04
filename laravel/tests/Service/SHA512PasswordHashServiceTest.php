@@ -12,7 +12,7 @@ class SHA512PasswordHashServiceTest extends TestCase
     test_does_not_return_empty_string_for_password()
     {
         $passwordHashService = new SHA512PasswordHashService();
-        $hashedPassword = $passwordHashService->hashForPassword("somepassword");
+        $hashedPassword = $passwordHashService->hash("somepassword");
         $this->assertNotEmpty($hashedPassword, "hashed password should not be empty");
     }
 
@@ -20,8 +20,8 @@ class SHA512PasswordHashServiceTest extends TestCase
     test_two_different_passwords_dont_produce_same_hash()
     {
         $passwordHashService = new SHA512PasswordHashService();
-        $hashedPassword = $passwordHashService->hashForPassword("somepassword");
-        $otherHashedPassword = $passwordHashService->hashForPassword("differentthing");
+        $hashedPassword = $passwordHashService->hash("somepassword");
+        $otherHashedPassword = $passwordHashService->hash("differentthing");
 
         $this->assertNotEquals($hashedPassword, $otherHashedPassword);
     }
@@ -30,7 +30,7 @@ class SHA512PasswordHashServiceTest extends TestCase
     test_generated_hash_matches_password()
     {
         $passwordHashService = new SHA512PasswordHashService();
-        $hash = $passwordHashService->hashForPassword("somepassword");
+        $hash = $passwordHashService->hash("somepassword");
 
         $this->assertTrue(
             $passwordHashService->passwordMatchesHash("somepassword", $hash)
@@ -41,7 +41,7 @@ class SHA512PasswordHashServiceTest extends TestCase
     test_generated_hash_doesnt_match_different_password()
     {
         $passwordHashService = new SHA512PasswordHashService();
-        $hashedPassword = $passwordHashService->hashForPassword("somepassword");
+        $hashedPassword = $passwordHashService->hash("somepassword");
 
         $this->assertFalse(
             $passwordHashService->passwordMatchesHash("otherthing", $hashedPassword)
@@ -56,7 +56,7 @@ class SHA512PasswordHashServiceTest extends TestCase
     {
         $this->expectException(RuntimeException::class);
         $passwordHashService = new SHA512PasswordHashService();
-        $passwordHashService->hashForPassword($emptyPassword);
+        $passwordHashService->hash($emptyPassword);
     }
 
     function emptyPasswordProvider()

@@ -8,11 +8,11 @@ use Illuminate\Support\Collection;
 
 class UserRepository implements IUserRepository
 {
-    public function createUser(string $username, string $password, string $about): User
+    public function createUser(string $username, string $hashedPassword, string $about): User
     {
         $user = new User();
         $user->username = $username;
-        $user->password = $password;
+        $user->password = $hashedPassword;
         $user->about = $about;
 
         $user->save();

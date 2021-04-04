@@ -66,7 +66,7 @@ class RegistrationServiceTest extends TestCase
         $this->registrationService = new RegistrationService($this->userRepository, $passwordHashService);
 
         $passwordHashService->expects($this->any())
-            ->method('hashForPassword')
+            ->method('hash')
             ->will($this->returnValue('mockPassHash'));
     }
 }

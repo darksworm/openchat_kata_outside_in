@@ -8,6 +8,10 @@ use Jamesh\Uuid\HasUuid;
 
 /**
  * @mixin Eloquent
+ * @property string user_id
+ * @property string username
+ * @property string password
+ * @property string about
  */
 class User extends Model
 {

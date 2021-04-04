@@ -20,16 +20,29 @@ class RegistrationService
         $this->passwordHashService = $passwordHashService;
     }
 
+    /**
+     * @throws DuplicateUsernameException
+     */
     public function registerUser(UserRegistrationRequest $request): ?User
     {
-        if ($this->userRepository->userWithUsernameExists($request->getUsername())) {
-            throw new DuplicateUsernameException();
-        }
+        $this->validateUsernameNotTaken($request->getUsername());
 
-        $passwordHash = $this->passwordHashService->hashForPassword($request->getPassword());
+        $hashedPassword = $this->passwordHashService->hash($request->getPassword());
 
         return $this->userRepository->createUser(
-            $request->getUsername(), $passwordHash, $request->getAbout()
+            username: $request->getUsername(),
+            hashedPassword: $hashedPassword,
+            about: $request->getAbout()
         );
+    }
+
+    /**
+     * @throws DuplicateUsernameException
+     */
+    private function validateUsernameNotTaken(string $username): void
+    {
+        if ($this->userRepository->userWithUsernameExists($username)) {
+            throw new DuplicateUsernameException();
+        }
     }
 }

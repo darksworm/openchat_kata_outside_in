@@ -4,16 +4,12 @@
 namespace App\Repository;
 
 
-use App\Exceptions\DuplicateUsernameException;
 use App\Models\User;
 use Illuminate\Support\Collection;
 
 interface IUserRepository
 {
-    /**
-     * @throws DuplicateUsernameException
-     */
-    function createUser(string $username, string $password, string $about): User;
+    function createUser(string $username, string $hashedPassword, string $about): User;
 
     function userWithUsernameExists(string $username): bool;
 

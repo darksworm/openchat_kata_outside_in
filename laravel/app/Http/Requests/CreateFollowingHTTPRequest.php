@@ -24,7 +24,7 @@ class CreateFollowingHTTPRequest extends BaseRequest
         ];
     }
 
-    function messages()
+    function messages(): array
     {
         return parent::messages() + [
                 'followeeId.different' => 'You cannot follow yourself.'

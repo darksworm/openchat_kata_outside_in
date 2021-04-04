@@ -7,6 +7,7 @@ namespace App\Service;
 use App\DTO\PostCreationRequest;
 use App\Exceptions\InappropriateLanguageException;
 use App\Exceptions\UserDoesNotExistException;
+use App\Models\Post;
 use App\Repository\IPostRepository;
 use App\Repository\IUserRepository;
 
@@ -21,17 +22,39 @@ class PostCreationService
         $this->postRepository = $postRepository;
     }
 
-    public function createPost(PostCreationRequest $postRequest)
+    /**
+     * @throws UserDoesNotExistException
+     * @throws InappropriateLanguageException
+     */
+    public function createPost(PostCreationRequest $postRequest): Post
     {
-        if (false === $this->userRepository->userWithIdExists($postRequest->getUserId())) {
-            throw new UserDoesNotExistException($postRequest->getUserId());
-        }
+        $this->validateUserExists($postRequest->getUserId());
+        $this->validateLanguageAppropriate($postRequest->getText());
 
-        if (false === $this->isLanguageAppropriate($postRequest->getText())) {
+        return $this->postRepository->createPost(
+            $postRequest->getUserId(),
+            $postRequest->getText()
+        );
+    }
+
+    /**
+     * @throws UserDoesNotExistException
+     */
+    private function validateUserExists(string $userId): void
+    {
+        if (false === $this->userRepository->userWithIdExists($userId)) {
+            throw new UserDoesNotExistException($userId);
+        }
+    }
+
+    /**
+     * @throws InappropriateLanguageException
+     */
+    private function validateLanguageAppropriate(string $text): void
+    {
+        if (false === $this->isLanguageAppropriate($text)) {
             throw new InappropriateLanguageException();
         }
-
-        return $this->postRepository->createPost($postRequest->getUserId(), $postRequest->getText());
     }
 
     private function isLanguageAppropriate(string $text): bool

@@ -8,6 +8,9 @@ use Jamesh\Uuid\HasUuid;
 
 /**
  * @mixin Eloquent
+ * @property string user_id
+ * @property string post_id
+ * @property string text
  */
 class Post extends Model
 {

@@ -12,12 +12,7 @@ class PostTransformerTest extends TestCase
     public function
     test_transforms_post()
     {
-        $post = $this->createMock(MockPost::class);
-        $post->user_id = "some-user-id";
-        $post->post_id = "some-post-id";
-        $post->text = "i am a post";
-        $post->created_at = Carbon::now();
-
+        $post = new MockPost();
         $transformed = PostTransformer::transform($post);
 
         $this->assertEquals($post->user_id, $transformed['userId']);
@@ -31,8 +26,13 @@ class PostTransformerTest extends TestCase
 
 class MockPost extends Post
 {
-    public $user_id;
-    public $post_id;
-    public $text;
+    public $user_id = "7e961019-f774-4282-9c62-7d3142b50eef";
+    public $post_id = "d5e039d9-31cb-49e0-9602-02c03ab9f9a9";
+    public $text = "I really loathe hard soaps.";
     public $created_at;
+
+    public function __construct(array $attributes = [])
+    {
+        $this->created_at = Carbon::now();
+    }
 }
