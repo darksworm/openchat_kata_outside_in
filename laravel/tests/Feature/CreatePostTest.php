@@ -4,20 +4,23 @@
 namespace Tests\Feature;
 
 
-use DateTime;
+use Illuminate\Support\Str;
+use Illuminate\Testing\TestResponse;
+use Tests\Feature\API\CreatesPosts;
+use Tests\Feature\API\RegistersUsers;
+use Tests\Feature\Providers\InvalidUuidProvider;
+use Tests\Feature\Shared\AssertsDateTimes;
+use Tests\Feature\Shared\TestsEndpointExistence;
 
 class CreatePostTest extends FeatureTestCase
 {
-    public function
-    test_route_is_connected()
+    use TestsEndpointExistence, AssertsDateTimes;
+    use InvalidUuidProvider;
+    use RegistersUsers, CreatesPosts;
+
+    function makeEmptyRequest(): TestResponse
     {
-        $response = $this->post('/users/asdfasdf/timeline');
-        $this->assertNotContains(
-            needle: $response->getStatusCode(),
-            haystack: [404, 405],
-            message: "Expected endpoint not to return {$response->getStatusCode()}"
-        );
-        $response->assertHeader('Access-Control-Allow-Origin', '*');
+        return $this->post('/users/f307ec13-93b9-4041-923e-30f64bf488ac/timeline');
     }
 
     /**
@@ -31,10 +34,13 @@ class CreatePostTest extends FeatureTestCase
         $this->assertEquals("Malformed request.", $response->getContent());
     }
 
+    /**
+     * @dataProvider invalidUuidProvider
+     */
     public function
-    test_returns_400_when_invalid_uuid_passed()
+    test_returns_400_when_invalid_uuid_passed(string $invalidUuid)
     {
-        $response = $this->post('/users/asdf/timeline', []);
+        $response = $this->post("/users/{$invalidUuid}/timeline", []);
         $response->assertStatus(400);
         $this->assertEquals("Invalid user id.", $response->getContent());
     }
@@ -42,7 +48,8 @@ class CreatePostTest extends FeatureTestCase
     public function
     test_returns_400_when_user_doesnt_exist()
     {
-        $response = $this->post('/users/4312ad78-dbf7-4e97-b675-49889efc0ba4/timeline', ['text' => 'goodtext']);
+        $randomUuid = Str::uuid();
+        $response = $this->createPostRequest(userId: $randomUuid, text: 'goodtext');
         $response->assertStatus(400);
         $this->assertEquals("User does not exist.", $response->getContent());
     }
@@ -50,11 +57,8 @@ class CreatePostTest extends FeatureTestCase
     public function
     test_returns_400_when_inappropriate_language_used_doesnt_exist()
     {
-        $userResponse = $this->post('/users', ['username' => 'someone', 'password' => 'someonespassword', 'about' => 'about someone']);
-        $userId = $userResponse->json('id');
-
-        $response = $this->post("/users/${userId}/timeline", ['text' => 'I like orAnges and elepHANTS!']);
-
+        $userId = $this->registerUser()['id'];
+        $response = $this->createPostRequest(userId: $userId, text: 'I like orAnges and elepHANTS!');
         $response->assertStatus(400);
         $this->assertEquals("Inappropriate language used.", $response->getContent());
     }
@@ -62,33 +66,19 @@ class CreatePostTest extends FeatureTestCase
     public function
     test_returns_201_when_post_creation_successful()
     {
-        $userResponse = $this->post('/users', ['username' => 'someone', 'password' => 'someonespassword', 'about' => 'about someone']);
-        $userId = $userResponse->json('id');
-
-        $response = $this->post("/users/${userId}/timeline", ['text' => 'my post text']);
+        $userId = $this->registerUser()['id'];
+        $response = $this->createPostRequest(userId: $userId, text: 'my post text');
 
         $response->assertStatus(201);
         $response->assertJsonStructure(['postId', 'userId', 'text', 'dateTime']);
 
         $this->assertValidUUID($response->json('userId'));
         $this->assertValidUUID($response->json('postId'));
-        $this->assertEquals($response->json('text'), 'my post text');
+
+        $this->assertEquals('my post text', $response->json('text'));
+
         $this->assertValidDateTime($response->json('dateTime'));
         $this->assertRecentDateTime($response->json('dateTime'));
-    }
-
-    private function assertValidDateTime(string $datetime)
-    {
-        return DateTime::createFromFormat("Y-m-d\TH:i:s\Z", $datetime) instanceof DateTime;
-    }
-
-    private function assertRecentDateTime(string $datetime)
-    {
-        $then = DateTime::createFromFormat("Y-m-d\TH:i:s\Z", $datetime);
-        $this->assertNotFalse($then, "${datetime} does not match the required datetime format!");
-        $now = new DateTime();
-        $secondsBetween = $now->getTimestamp() - $then->getTimestamp();
-        $this->assertLessThan(100000, $secondsBetween);
     }
 
     public function badRequestDataProvider()

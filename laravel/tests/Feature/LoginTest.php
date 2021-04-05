@@ -4,18 +4,18 @@
 namespace Tests\Feature;
 
 
+use Illuminate\Testing\TestResponse;
+use Tests\Feature\API\RegistersUsers;
+use Tests\Feature\Shared\TestsEndpointExistence;
+
 class LoginTest extends FeatureTestCase
 {
-    public function
-    test_route_is_connected()
+    use TestsEndpointExistence;
+    use RegistersUsers;
+
+    function makeEmptyRequest(): TestResponse
     {
-        $response = $this->post('/login');
-        $this->assertNotContains(
-            needle: $response->getStatusCode(),
-            haystack: [404, 405],
-            message: "Expected endpoint not to return {$response->getStatusCode()}"
-        );
-        $response->assertHeader('Access-Control-Allow-Origin', '*');
+        return $this->post('/login');
     }
 
     /**
@@ -40,7 +40,10 @@ class LoginTest extends FeatureTestCase
     public function
     test_returns_400_for_incorrect_password()
     {
-        $this->post('/users', ['username' => 'someone', 'password' => 'someonespassword', 'about' => 'about someone']);
+        $this->registerUser(
+            username: 'myName',
+            password: 'myPassword'
+        );
         $response = $this->post('/login', ['username' => 'someone', 'password' => 'otherpassword']);
         $response->assertStatus(400);
         $this->assertEquals('Invalid credentials.', $response->getContent());
@@ -49,14 +52,18 @@ class LoginTest extends FeatureTestCase
     public function
     test_login_successful_for_registered_user()
     {
-        $this->post('/users', ['username' => 'someone', 'password' => 'someonespassword', 'about' => 'about someone']);
+        $this->registerUser(
+            username: 'myName',
+            password: 'myPassword',
+            about: 'about me'
+        );
 
-        $response = $this->post('/login', ['username' => 'someone', 'password' => 'someonespassword']);
+        $response = $this->post('/login', ['username' => 'myName', 'password' => 'myPassword']);
         $response->assertStatus(200);
 
         $response->assertJsonFragment([
-            'username' => 'someone',
-            'about' => 'about someone'
+            'username' => 'myName',
+            'about' => 'about me'
         ]);
 
         $this->assertValidUUID($response->json('id'));

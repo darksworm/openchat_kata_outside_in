@@ -4,22 +4,22 @@
 namespace Tests\Feature;
 
 
+use Illuminate\Testing\TestResponse;
+use Tests\Feature\API\RegistersUsers;
+use Tests\Feature\Shared\TestsEndpointExistence;
+
 class GetAllUsersTest extends FeatureTestCase
 {
-    public function
-    test_endpoint_is_connected()
+    use TestsEndpointExistence;
+    use RegistersUsers;
+
+    function makeEmptyRequest(): TestResponse
     {
-        $response = $this->get('/users');
-        $this->assertNotContains(
-            needle: $response->getStatusCode(),
-            haystack: [404, 405],
-            message: "Expected endpoint not to return {$response->getStatusCode()}"
-        );
-        $response->assertHeader('Access-Control-Allow-Origin', '*');
+        return $this->get('/users');
     }
 
     public function
-    test_endpoint_returns_no_user_when_table_empty()
+    test_endpoint_returns_no_users_when_no_users_created()
     {
         $response = $this->get('/users');
         $response->assertStatus(200);
@@ -29,31 +29,14 @@ class GetAllUsersTest extends FeatureTestCase
     public function
     test_endpoint_returns_all_users()
     {
-        $requests = [
-            $this->aRegistrationRequest(), $this->aRegistrationRequest(), $this->aRegistrationRequest()
-        ];
-
-        $expectedUsers = collect($requests)->map(function ($r) {
-            return $this->post('/users', $r)->json();
-        });
+        $registeredUsers = $this->registerUsers(3);
 
         $response = $this->get('/users');
-
         $response->assertJsonCount(3);
         $response->assertJsonStructure([['id', 'username', 'about']]);
 
-        foreach ($expectedUsers as $user) {
+        foreach ($registeredUsers as $user) {
             $response->assertJsonFragment($user);
         }
-    }
-
-    private function
-    aRegistrationRequest()
-    {
-        return [
-            'username' => $this->randomString(),
-            'password' => $this->randomString(),
-            'about' => $this->randomString()
-        ];
     }
 }

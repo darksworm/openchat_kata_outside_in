@@ -3,24 +3,18 @@
 namespace Tests\Feature;
 
 
+use Illuminate\Testing\TestResponse;
+use Tests\Feature\API\RegistersUsers;
+use Tests\Feature\Shared\TestsEndpointExistence;
+
 class RegistrationTest extends FeatureTestCase
 {
-    private const ALICE_REGISTRATION_REQUEST = [
-        'username' => 'Alice',
-        'password' => 'MyCatIsBetterThanYours',
-        'about' => 'I like sailing and rocketships.'
-    ];
+    use TestsEndpointExistence;
+    use RegistersUsers;
 
-    public function
-    test_route_is_connected()
+    function makeEmptyRequest(): TestResponse
     {
-        $response = $this->post('/users');
-        $this->assertNotContains(
-            needle: $response->getStatusCode(),
-            haystack: [404, 405],
-            message: "Expected endpoint not to return {$response->getStatusCode()}"
-        );
-        $response->assertHeader('Access-Control-Allow-Origin', '*');
+        return $this->post('/users');
     }
 
     /**
@@ -39,14 +33,17 @@ class RegistrationTest extends FeatureTestCase
     public function
     test_returns_201_and_user_info_when_user_registered()
     {
-        $response = $this->post('/users', self::ALICE_REGISTRATION_REQUEST);
-
+        $response = $this->registerUserRequest(
+            username: 'Alice',
+            password: 'myPassword',
+            about: 'I like to eat pies'
+        );
         $response->assertStatus(201);
 
         $response->assertJsonStructure(['username', 'about', 'id']);
         $response->assertJsonFragment([
-            'username' => self::ALICE_REGISTRATION_REQUEST['username'],
-            'about' => self::ALICE_REGISTRATION_REQUEST['about']
+            'username' => 'Alice',
+            'about' => 'I like to eat pies'
         ]);
 
         $this->assertValidUUID($response->json('id'));
@@ -55,10 +52,10 @@ class RegistrationTest extends FeatureTestCase
     public function
     test_returns_400_when_registering_duplicate_username()
     {
-        $response = $this->post('/users', self::ALICE_REGISTRATION_REQUEST);
+        $response = $this->registerUserRequest(username: 'Alice');
         $response->assertStatus(201);
 
-        $response = $this->post('/users', self::ALICE_REGISTRATION_REQUEST);
+        $response = $this->registerUserRequest(username: 'Alice');
         $response->assertStatus(400);
         $this->assertEquals('Username already in use.', $response->getContent());
     }
@@ -100,5 +97,4 @@ class RegistrationTest extends FeatureTestCase
             ]]
         ];
     }
-
 }

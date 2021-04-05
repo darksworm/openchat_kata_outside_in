@@ -6,22 +6,22 @@ namespace Tests\Feature;
 
 use Generator;
 use Illuminate\Support\Str;
+use Illuminate\Testing\TestResponse;
+use Tests\Feature\API\FollowsUsers;
+use Tests\Feature\API\RegistersUsers;
+use Tests\Feature\Shared\TestsEndpointExistence;
 
 class FollowUserTest extends FeatureTestCase
 {
+    use TestsEndpointExistence;
+    use RegistersUsers, FollowsUsers;
+
     private string $joanId;
     private string $michaelId;
 
-    public function
-    test_endpoint_is_connected()
+    function makeEmptyRequest(): TestResponse
     {
-        $response = $this->post('/followings');
-        $this->assertNotContains(
-            needle: $response->getStatusCode(),
-            haystack: [404, 405],
-            message: "Expected endpoint not to return {$response->getStatusCode()}"
-        );
-        $response->assertHeader('Access-Control-Allow-Origin', '*');
+        return $this->post('/followings');
     }
 
     /**
@@ -36,15 +36,15 @@ class FollowUserTest extends FeatureTestCase
     }
 
     public function
-    test_returns_400_for_nonexistant_follower()
+    test_returns_400_for_nonexistent_follower()
     {
         $this->createThreeUsers();
 
-        $following = ['followerId' => Str::uuid()->toString(), 'followeeId' => $this->joanId];
-        $followResponse = $this->post('/followings', $following);
+        $nonExistentUserId = Str::uuid()->toString();
+        $followResponse = $this->followUser($nonExistentUserId, $this->joanId);
 
         $followResponse->assertStatus(400);
-        $this->assertEquals("User with id {$following['followerId']} does not exist.", $followResponse->getContent());
+        $this->assertEquals("User with id {$nonExistentUserId} does not exist.", $followResponse->getContent());
     }
 
     public function
@@ -52,11 +52,11 @@ class FollowUserTest extends FeatureTestCase
     {
         $this->createThreeUsers();
 
-        $following = ['followerId' => $this->michaelId, 'followeeId' => Str::uuid()->toString()];
-        $followResponse = $this->post('/followings', $following);
+        $nonExistentUserId = Str::uuid()->toString();
+        $followResponse = $this->followUser($this->joanId, $nonExistentUserId);
 
         $followResponse->assertStatus(400);
-        $this->assertEquals("User with id {$following['followeeId']} does not exist.", $followResponse->getContent());
+        $this->assertEquals("User with id {$nonExistentUserId} does not exist.", $followResponse->getContent());
     }
 
     public function
@@ -64,10 +64,10 @@ class FollowUserTest extends FeatureTestCase
     {
         $this->createThreeUsers();
 
-        $followResponse = $this->post('/followings', ['followerId' => $this->michaelId, 'followeeId' => $this->joanId]);
+        $followResponse = $this->followUser($this->michaelId, $this->joanId);
         $followResponse->assertStatus(201);
 
-        $followResponse = $this->post('/followings', ['followerId' => $this->michaelId, 'followeeId' => $this->joanId]);
+        $followResponse = $this->followUser($this->michaelId, $this->joanId);
         $followResponse->assertStatus(400);
         $this->assertEquals("Following already exists.", $followResponse->getContent());
     }
@@ -77,23 +77,16 @@ class FollowUserTest extends FeatureTestCase
     {
         $this->createThreeUsers();
 
-        $followResponse = $this->post('/followings', ['followerId' => $this->joanId, 'followeeId' => $this->joanId]);
+        $followResponse = $this->followUser($this->joanId, $this->joanId);
         $followResponse->assertStatus(400);
         $this->assertEquals("You cannot follow yourself.", $followResponse->getContent());
     }
 
     private function createThreeUsers()
     {
-        $michaelResponse = $this->post('/users', ['username' => 'SaintMichael', 'password' => 'Dieu', 'about' => 'a saint.']);
-        $michaelResponse->assertStatus(201);
-        $this->michaelId = $michaelResponse->json('id');
-
-        $joanResponse = $this->post('/users', ['username' => 'Joan', 'password' => 'd/Ark', 'about' => 'i am gods daughter']);
-        $joanResponse->assertStatus(201);
-        $this->joanId = $joanResponse->json('id');
-
-        $charlesResponse = $this->post('/users', ['username' => 'Charles', 'password' => 'DieuMio', 'about' => 'I am the king of France.']);
-        $charlesResponse->assertStatus(201);
+        $this->michaelId = $this->registerUser(username: 'SaintMichael', password: 'Dieu', about: 'a saint')['id'];
+        $this->joanId = $this->registerUser(username: 'Joan', password: 'd/Ark', about: 'i am gods daughter')['id'];
+        $this->registerUser(username: 'Charles', password: 'DieuMio', about: 'I am the king of France.')['id'];
     }
 
     public function malformedRequestProvider(): Generator
