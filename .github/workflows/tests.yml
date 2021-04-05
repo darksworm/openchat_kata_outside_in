@@ -60,4 +60,4 @@ jobs:
           
       - name: Mutation tests
         run: |
-          cd laravel && infection -s --threads=4 --configuration=infection.json -vvv
+          cd laravel && infection -s --threads=4 --configuration=infection.json --test-framework=phpunit -vvv
