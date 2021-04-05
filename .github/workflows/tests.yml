@@ -56,4 +56,4 @@ jobs:
           
       - run: |
           cd laravel
-          infection --threads=4 -c phpunit.xml -s
+          infection --threads=4
