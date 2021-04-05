@@ -15,7 +15,6 @@
         }
     },
     "mutators": {
-        "@default": true,
         "@arithmetic": true,
         "@boolean": true,
         "@cast": true,
