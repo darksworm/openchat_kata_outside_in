@@ -56,8 +56,8 @@ jobs:
           mkdir -p build/logs
           php-coveralls --coverage_clover=clover.xml -v
           
-       - run: composer global require infection/infection
+      - run: composer global require infection/infection
           
-       - name: Mutation tests
-         run: |
-           cd laravel && infection -s --threads=4 --configuration=infection.json -vvv
+      - name: Mutation tests
+        run: |
+          cd laravel && infection -s --threads=4 --configuration=infection.json -vvv
