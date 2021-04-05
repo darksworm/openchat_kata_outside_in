@@ -14,15 +14,13 @@ jobs:
       
       - uses: mirromutth/mysql-action@v1.1
         with:
-          mysql version: '8.0.23'
-          host port: 3800
-          mysql database: 'openchat_test'
+          mysql version: 8.0.23
+          mysql database: openchat_test
           mysql root password: root 
-          mysql password: root
           
       - uses: shivammathur/setup-php@v2
         with:
-          php-version: '8.0.3'
+          php-version: 8.0.3
           extensions: swoole, mysqli, pdo, pdo_mysql
           coverage: pcov
           ini-values: pcov.directory=laravel
@@ -35,7 +33,6 @@ jobs:
       - run: |
           sed -i 's/DB_HOST=db/DB_HOST=localhost/g' laravel/.env
           sed -i 's/DB_DATABASE=openchat/DB_DATABASE=openchat_test/g' laravel/.env
-          sed -i 's/DB_PORT=3306/DB_PORT=3800/g' laravel/.env
       
       - run: cd laravel && php artisan config:clear && php artisan migrate
       
