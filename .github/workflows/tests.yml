@@ -31,7 +31,7 @@ jobs:
       - run: cp laravel/.env.example laravel/.env
       
       - run: |
-          sed -i 's/DB_HOST=db/DB_HOST=localhost/g' laravel/.env
+          sed -i 's/DB_HOST=db/DB_HOST=127.0.0.1/g' laravel/.env
           sed -i 's/DB_DATABASE=openchat/DB_DATABASE=openchat_test/g' laravel/.env
       
       - run: cd laravel && php artisan config:clear && php artisan migrate
