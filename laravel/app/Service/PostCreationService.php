@@ -62,8 +62,7 @@ class PostCreationService
         $blacklist = collect(['ice cream', 'elephant', 'orange']);
         $lowerText = strtolower($text);
 
-        return false === $blacklist->contains(function ($badWord) use ($lowerText) {
-                return str_contains($lowerText, $badWord);
-            });
+        $containsBadWords = $blacklist->contains(fn($w) => str_contains($lowerText, $w));
+        return false === $containsBadWords;
     }
 }

@@ -30,8 +30,6 @@ class FollowingsRepository implements IFollowingsRepository
     {
         return Following::with(['followee'])
             ->where('follower_id', $followerId)
-            ->get()->map(function (Following $f) {
-                return $f->followee()->first();
-            });
+            ->get()->map(fn($f) => $f->followee()->first());
     }
 }

@@ -50,9 +50,9 @@ class AuthorizationController
     private function HTTPRequestToServiceRequest(UserRegistrationHTTPRequest $request): UserRegistrationRequest
     {
         return new UserRegistrationRequest(
-            $request->username(),
-            $request->password(),
-            $request->about()
+            username: $request->username(),
+            password: $request->password(),
+            about: $request->about()
         );
     }
 }

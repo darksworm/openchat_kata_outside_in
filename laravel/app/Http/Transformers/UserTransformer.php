@@ -21,8 +21,6 @@ class UserTransformer
 
     public static function transformAll(User ...$users): Collection
     {
-        return collect($users)->map(function ($u) {
-            return self::transform($u);
-        });
+        return collect($users)->map(fn($u) => self::transform($u));
     }
 }
