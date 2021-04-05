@@ -28,18 +28,20 @@ jobs:
       
       - run: composer install --working-dir=laravel
       
-      - run: cp laravel/.env.example laravel/.env
-      
-      - run: |
+      - name: Set up laravel env config
+        run: |
+          cp laravel/.env.example laravel/.env
           sed -i 's/DB_HOST=db/DB_HOST=127.0.0.1/g' laravel/.env
           sed -i 's/DB_DATABASE=openchat/DB_DATABASE=openchat_test/g' laravel/.env
       
-      - run: |
+      - name: Migrate database
+        run: |
           cd laravel
           php artisan config:clear
           php artisan migrate
       
-      - run: |
+      - name: Tests
+        run: |
           php -dpcov.enabled=1 -dpcov.directory=laravel \
           -dpcov.exclude="~vendor~" laravel/vendor/bin/phpunit \
           --coverage-text -c laravel/phpunit.xml --coverage-clover \
@@ -54,7 +56,7 @@ jobs:
           mkdir -p build/logs
           php-coveralls --coverage_clover=clover.xml -v
           
-      - run: |
-          cd laravel
+      - name: Mutation tests
+        run: |
           composer global require infection/infection
-          infection -s --threads=4 --configuration=infection.json
+          cd laravel && infection -s --threads=4 --configuration=infection.json
