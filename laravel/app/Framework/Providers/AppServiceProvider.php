@@ -13,6 +13,7 @@ use App\Services\IPasswordHashService;
 use App\Services\PostCreationService;
 use App\Services\RegistrationService;
 use App\Services\SHA512PasswordHashService;
+use App\Services\TimelineService;
 use App\Services\UserService;
 use Illuminate\Support\ServiceProvider;
 
@@ -27,6 +28,7 @@ class AppServiceProvider extends ServiceProvider
         RegistrationService::class => RegistrationService::class,
         PostCreationService::class => PostCreationService::class,
         FollowingsService::class => FollowingsService::class,
-        UserService::class => UserService::class
+        UserService::class => UserService::class,
+        TimelineService::class => TimelineService::class
     ];
 }

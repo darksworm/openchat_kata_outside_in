@@ -4,6 +4,7 @@ namespace Tests\Http\Transformers;
 
 use App\Http\Transformers\UserTransformer;
 use App\Models\User;
+use Illuminate\Support\Str;
 use PHPUnit\Framework\TestCase;
 
 class UserTransformerTest extends TestCase
@@ -12,11 +13,8 @@ class UserTransformerTest extends TestCase
     test_copies_id_username_and_about()
     {
         $user = new MockUser();
-        $transformed = UserTransformer::transform($user);
-
-        $this->assertEquals($transformed['id'], $user->user_id);
-        $this->assertEquals($transformed['username'], $user->username);
-        $this->assertEquals($transformed['about'], $user->about);
+        $transformed = UserTransformer::transform($user)->toArray();
+        $this->assertUserTransformed($user, $transformed);
     }
 
     public function
@@ -24,27 +22,43 @@ class UserTransformerTest extends TestCase
     {
         $user = new MockUser();
         $transformed = UserTransformer::transform($user);
-
         $this->assertArrayNotHasKey(key: 'password', array: $transformed);
     }
 
     public function
     test_copies_id_username_and_about_via_transformAll()
     {
-        $user = new MockUser();
-        $transformed = UserTransformer::transformAll($user);
+        $users = [new MockUser(), new MockUser()];
+        $transformed = UserTransformer::transformAll(...$users)->toArray();
 
-        $this->assertEquals($transformed[0]['id'], $user->user_id);
-        $this->assertEquals($transformed[0]['username'], $user->username);
-        $this->assertEquals($transformed[0]['about'], $user->about);
+        collect($users)->map(
+            fn($user, $key) => ['user' => $user, 'transformed' => $transformed[$key]]
+        )->each(
+            fn($tuple) => $this->assertUserTransformed($tuple['user'], $tuple['transformed'])
+        );
+    }
+
+    private function assertUserTransformed(User $user, array $transformed)
+    {
+        $this->assertEquals($transformed['id'], $user->user_id);
+        $this->assertEquals($transformed['username'], $user->username);
+        $this->assertEquals($transformed['about'], $user->about);
     }
 }
 
 class MockUser extends User
 {
     public
-        $user_id = '37ccf70d-e63e-4299-85f0-2684e160bc12',
-        $username = 'john',
-        $about = 'a sailor.',
-        $password = 'somehorriblepasswordhash.0/234xjjiwehjkczuhiw';
+        $user_id,
+        $username,
+        $about,
+        $password;
+
+    public function __construct(array $attributes = [])
+    {
+        $this->user_id = Str::uuid();
+        $this->username = Str::random();
+        $this->about = Str::random();
+        $this->password = Str::random(32);
+    }
 }

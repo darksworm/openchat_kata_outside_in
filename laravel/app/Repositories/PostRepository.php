@@ -5,6 +5,7 @@ namespace App\Repositories;
 
 
 use App\Models\Post;
+use Illuminate\Support\Collection;
 
 class PostRepository implements IPostRepository
 {
@@ -17,5 +18,12 @@ class PostRepository implements IPostRepository
         $post->save();
 
         return $post;
+    }
+
+    function postsByUserId(string $userId): Collection
+    {
+        return Post::where('user_id', $userId)
+            ->orderBy('created_at', 'desc')
+            ->get();
     }
 }

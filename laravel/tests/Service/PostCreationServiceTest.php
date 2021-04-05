@@ -19,7 +19,7 @@ class PostCreationServiceTest extends TestCase
     private PostCreationService $postCreationService;
 
     public function
-    test_throws_exception_when_nonexistant_user_id_passed()
+    test_throws_exception_when_nonexistent_user_id_passed()
     {
         $this->expectException(UserDoesNotExistException::class);
 

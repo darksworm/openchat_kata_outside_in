@@ -5,6 +5,7 @@ namespace Tests\Http\Transformers;
 use App\Http\Transformers\PostTransformer;
 use App\Models\Post;
 use Carbon\Carbon;
+use Illuminate\Support\Str;
 use PHPUnit\Framework\TestCase;
 
 class PostTransformerTest extends TestCase
@@ -13,8 +14,26 @@ class PostTransformerTest extends TestCase
     test_transforms_post()
     {
         $post = new MockPost();
-        $transformed = PostTransformer::transform($post);
+        $transformed = PostTransformer::transform($post)->toArray();
 
+        $this->assertPostTransformed($post, $transformed);
+    }
+
+    public function
+    test_transforms_posts_via_transformAll()
+    {
+        $posts = [new MockPost(), new MockPost()];
+        $transformed = PostTransformer::transformAll(... $posts)->toArray();
+
+        collect($posts)->map(
+            fn($post, $key) => ['post' => $post, 'transformed' => $transformed[$key]]
+        )->each(
+            fn($tuple) => $this->assertPostTransformed($tuple['post'], $tuple['transformed'])
+        );
+    }
+
+    private function assertPostTransformed(Post $post, array $transformed)
+    {
         $this->assertEquals($post->user_id, $transformed['userId']);
         $this->assertEquals($post->post_id, $transformed['postId']);
         $this->assertEquals($post->text, $transformed['text']);
@@ -26,13 +45,16 @@ class PostTransformerTest extends TestCase
 
 class MockPost extends Post
 {
-    public $user_id = "7e961019-f774-4282-9c62-7d3142b50eef";
-    public $post_id = "d5e039d9-31cb-49e0-9602-02c03ab9f9a9";
-    public $text = "I really loathe hard soaps.";
+    public $user_id;
+    public $post_id;
+    public $text;
     public $created_at;
 
     public function __construct(array $attributes = [])
     {
+        $this->user_id = Str::uuid();
+        $this->post_id = Str::uuid();
+        $this->text = (string)random_bytes(16);
         $this->created_at = Carbon::now();
     }
 }

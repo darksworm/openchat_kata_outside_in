@@ -22,6 +22,13 @@ class PostTransformer
         ]);
     }
 
+    public static function transformAll(Post ...$posts): Collection
+    {
+        return collect($posts)->map(
+            fn($p) => static::transform($p)
+        );
+    }
+
     private static function formatDateTime(Carbon $date): string
     {
         return $date->format("Y-m-d\TH:i:s\Z");
