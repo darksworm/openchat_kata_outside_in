@@ -23,7 +23,10 @@ class PostController extends Controller
 
     public function createPost(CreatePostHTTPRequest $request): Response
     {
-        $creationRequest = new PostCreationRequest($request->userId(), $request->text());
+        $creationRequest = new PostCreationRequest(
+            userId: $request->userId(),
+            text: $request->text()
+        );
 
         try {
             $post = $this->postCreationService->createPost($creationRequest);
