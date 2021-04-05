@@ -61,6 +61,7 @@ class GetMyTimelineTest extends FeatureTestCase
         $expectedPosts[] = $this->createPost($myUserId);
 
         $response = $this->get($this->endpoint($myUserId));
+        $response->assertStatus(200);
         $response->assertJsonCount(2);
 
         // reverse is important to validate that the returned data is in reverse-chronological order

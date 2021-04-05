@@ -64,6 +64,7 @@ class GetMyWallTest extends FeatureTestCase
         $this->createPost($strangerUserId);
 
         $response = $this->get($this->endpoint($myUserId));
+        $response->assertStatus(200);
 
         // reverse is important to validate that the returned posts are in reverse-chronological order
         $response->assertExactJson(array_reverse($expectedPosts));
