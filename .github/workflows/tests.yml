@@ -42,7 +42,8 @@ jobs:
       - run: |
           php -dpcov.enabled=1 -dpcov.directory=laravel \
           -dpcov.exclude="~vendor~" laravel/vendor/bin/phpunit \
-          --coverage-text -c laravel/phpunit.xml --coverage-clover clover.xml
+          --coverage-text -c laravel/phpunit.xml --coverage-clover \
+          laravel/clover.xml
       
       - name: Upload coverage results to Coveralls
         env:
