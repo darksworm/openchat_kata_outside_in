@@ -24,7 +24,7 @@ jobs:
           extensions: swoole, mysqli, pdo, pdo_mysql
           coverage: pcov
           ini-values: pcov.directory=laravel
-          tools: composer, phpunit, infection
+          tools: composer, phpunit
       
       - run: composer install --working-dir=laravel
       
@@ -56,4 +56,5 @@ jobs:
           
       - run: |
           cd laravel
-          infection --threads=4
+          composer global require infection/infection
+          infection -s --threads=4 --configuration=infection.json
