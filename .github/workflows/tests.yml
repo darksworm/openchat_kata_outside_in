@@ -1,0 +1,63 @@
+name: tests
+
+on:
+  push:
+    branches: [ master, ci ]
+  pull_request:
+    branches: [ master, ci ]
+
+jobs:
+  run-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      
+      - uses: mirromutth/mysql-action@v1.1
+        with:
+          mysql version: 8.0.23
+          mysql database: openchat_test
+          mysql root password: root 
+          
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: 8.0.3
+          extensions: swoole, mysqli, pdo, pdo_mysql
+          coverage: pcov
+          ini-values: pcov.directory=laravel
+          tools: composer, phpunit
+      
+      - run: composer install --working-dir=laravel
+      
+      - name: Set up laravel env config
+        run: |
+          cp laravel/.env.example laravel/.env
+          sed -i 's/DB_HOST=db/DB_HOST=127.0.0.1/g' laravel/.env
+          sed -i 's/DB_DATABASE=openchat/DB_DATABASE=openchat_test/g' laravel/.env
+      
+      - name: Migrate database
+        run: |
+          cd laravel
+          php artisan config:clear
+          php artisan migrate
+      
+      - name: Tests
+        run: |
+          php -dpcov.enabled=1 -dpcov.directory=laravel \
+          -dpcov.exclude="~vendor~" laravel/vendor/bin/phpunit \
+          --coverage-text -c laravel/phpunit.xml --coverage-clover \
+          laravel/clover.xml
+      
+      - name: Upload coverage results to Coveralls
+        env:
+          COVERALLS_REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          cd laravel
+          composer global require php-coveralls/php-coveralls
+          mkdir -p build/logs
+          php-coveralls --coverage_clover=clover.xml -v
+          
+#       - run: composer global require infection/infection
+          
+#       - name: Mutation tests
+#         run: |
+#           cd laravel && infection -s --threads=4 --configuration=infection.json
