@@ -34,7 +34,10 @@ jobs:
           sed -i 's/DB_HOST=db/DB_HOST=127.0.0.1/g' laravel/.env
           sed -i 's/DB_DATABASE=openchat/DB_DATABASE=openchat_test/g' laravel/.env
       
-      - run: cd laravel && php artisan config:clear && php artisan migrate
+      - run: |
+          cd laravel
+          php artisan config:clear
+          php artisan migrate
       
       - run: |
           php -dpcov.enabled=1 -dpcov.directory=laravel \
@@ -45,5 +48,8 @@ jobs:
         env:
           COVERALLS_REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
+          cd laravel
           composer global require php-coveralls/php-coveralls
           php-coveralls --coverage_clover=clover.xml -v
+          
+      - run: cd laravel && infection -s --threads 4
