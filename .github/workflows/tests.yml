@@ -51,6 +51,7 @@ jobs:
         run: |
           cd laravel
           composer global require php-coveralls/php-coveralls
+          mkdir -p build/logs
           php-coveralls --coverage_clover=clover.xml -v
           
       - run: cd laravel && infection -s --threads 4
