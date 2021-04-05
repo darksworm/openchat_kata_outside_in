@@ -1,0 +1,32 @@
+{
+    "source": {
+        "directories": [
+            "app"
+        ],
+        "excludes": [
+            "Framework"
+        ]
+    },
+    "timeout": 1000,
+    "logs": {
+        "text": "infection.log"
+    },
+    "mutators": {
+        "@default": true,
+        "@arithmetic": true,
+        "@boolean": true,
+        "@cast": true,
+        "@conditional_boundary": true,
+        "@conditional_negotiation": true,
+        "@equal": true,
+        "@identical": true,
+        "@number": true,
+        "@operator": true,
+        "@regex": true,
+        "@removal": true,
+        "@return_value": true,
+        "@sort": true,
+        "@unwrap": true,
+        "@extensions": true
+    }
+}
