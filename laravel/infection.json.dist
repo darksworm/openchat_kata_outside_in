@@ -9,7 +9,10 @@
     },
     "timeout": 1000,
     "logs": {
-        "text": "infection.log"
+        "text": "infection.log",
+        "badge": {
+            "branch": "master"
+        }
     },
     "mutators": {
         "@default": true,
