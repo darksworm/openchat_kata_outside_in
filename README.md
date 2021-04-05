@@ -1,0 +1,3 @@
+[![Mutation testing badge](https://img.shields.io/endpoint?style=flat&url=https%3A%2F%2Fbadge-api.stryker-mutator.io%2Fgithub.com%2Fdarksworm%2Fopenchat_kata_outside_in%2Fmaster)](https://dashboard.stryker-mutator.io/reports/github.com/darksworm/openchat_kata_outside_in/master) [![Coverage Status](https://coveralls.io/repos/github/darksworm/openchat_kata_outside_in/badge.svg?branch=master)](https://coveralls.io/github/darksworm/openchat_kata_outside_in?branch=master)
+
+Openchat API implemented using Outside-In/London style TDD with PHP8 and Laravel similarly as in the [London vs. Chicago video series]( https://cleancoders.com/series/comparativeDesign).
