@@ -54,4 +54,6 @@ jobs:
           mkdir -p build/logs
           php-coveralls --coverage_clover=clover.xml -v
           
-      - run: cd laravel && infection -s --threads=4
+      - run: |
+          cd laravel
+          infection --threads=4 -c phpunit.xml -s
