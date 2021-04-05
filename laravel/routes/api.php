@@ -14,6 +14,7 @@ Route::get('/users', [UserController::class, 'getAllUsers']);
 
 Route::post('/users/{userId}/timeline', [PostController::class, 'createPost']);
 Route::get('/users/{userId}/timeline', [PostController::class, 'getTimeline']);
+Route::get('/users/{userId}/wall', [PostController::class, 'getWall']);
 
 Route::post('/followings', [FollowingsController::class, 'createFollowing']);
 Route::get('/followings/{followerId}/followees', [FollowingsController::class, 'getFollowees']);

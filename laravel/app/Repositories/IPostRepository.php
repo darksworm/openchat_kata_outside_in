@@ -12,4 +12,6 @@ interface IPostRepository
     function createPost(string $userId, string $text): Post;
 
     function postsByUserId(string $userId): Collection;
+
+    function getWallPostsForUserId(string $userId): Collection;
 }

@@ -9,15 +9,18 @@ use App\Exceptions\InappropriateLanguageException;
 use App\Exceptions\UserDoesNotExistException;
 use App\Http\Requests\CreatePostHTTPRequest;
 use App\Http\Requests\GetTimelineRequest;
+use App\Http\Requests\GetWallRequest;
 use App\Http\Transformers\PostTransformer;
 use App\Services\PostCreationService;
+use App\Services\PostWallService;
 use App\Services\TimelineService;
 use Illuminate\Http\Response;
 
 class PostController extends Controller
 {
     public function __construct(private PostCreationService $postCreationService,
-                                private TimelineService $timelineService)
+                                private TimelineService $timelineService,
+                                private PostWallService $wallService)
     {
     }
 
@@ -42,6 +45,16 @@ class PostController extends Controller
     {
         try {
             $posts = $this->timelineService->timelineForUserId($request->userId());
+            return response(PostTransformer::transformAll(...$posts), 200);
+        } catch (UserDoesNotExistException $e) {
+            return response("User with id {$e->getUserId()} does not exist.", 400);
+        }
+    }
+
+    public function getWall(GetWallRequest $request): Response
+    {
+        try {
+            $posts = $this->wallService->wallForUserId($request->userId());
             return response(PostTransformer::transformAll(...$posts), 200);
         } catch (UserDoesNotExistException $e) {
             return response("User with id {$e->getUserId()} does not exist.", 400);
