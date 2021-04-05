@@ -1,14 +1,14 @@
 <?php
 
 
-namespace App\Service;
+namespace App\Services;
 
 
 use App\Exceptions\Login\BadPasswordException;
 use App\Exceptions\Login\EmptyCredentialsException;
 use App\Exceptions\Login\LoginFailException;
 use App\Models\User;
-use App\Repository\IUserRepository;
+use App\Repositories\IUserRepository;
 
 class LoginService
 {

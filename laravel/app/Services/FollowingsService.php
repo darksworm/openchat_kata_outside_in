@@ -1,13 +1,13 @@
 <?php
 
 
-namespace App\Service;
+namespace App\Services;
 
 
 use App\Exceptions\FollowingAlreadyExistsException;
 use App\Exceptions\UserDoesNotExistException;
 use App\Models\Following;
-use App\Repository\IFollowingsRepository;
+use App\Repositories\IFollowingsRepository;
 use Illuminate\Support\Collection;
 
 class FollowingsService

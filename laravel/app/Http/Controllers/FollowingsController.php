@@ -9,7 +9,7 @@ use App\Exceptions\UserDoesNotExistException;
 use App\Http\Requests\CreateFollowingHTTPRequest;
 use App\Http\Requests\GetFolloweesHTTPRequest;
 use App\Http\Transformers\UserTransformer;
-use App\Service\FollowingsService;
+use App\Services\FollowingsService;
 use Illuminate\Http\Response;
 
 class FollowingsController extends Controller

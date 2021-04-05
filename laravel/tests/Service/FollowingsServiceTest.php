@@ -6,9 +6,9 @@ use App\Exceptions\FollowingAlreadyExistsException;
 use App\Exceptions\UserDoesNotExistException;
 use App\Models\Following;
 use App\Models\User;
-use App\Repository\IFollowingsRepository;
-use App\Service\FollowingsService;
-use App\Service\UserService;
+use App\Repositories\IFollowingsRepository;
+use App\Services\FollowingsService;
+use App\Services\UserService;
 use Illuminate\Support\Str;
 use PHPUnit\Framework\TestCase;
 

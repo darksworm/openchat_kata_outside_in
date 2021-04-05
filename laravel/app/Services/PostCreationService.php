@@ -1,15 +1,15 @@
 <?php
 
 
-namespace App\Service;
+namespace App\Services;
 
 
 use App\DTO\PostCreationRequest;
 use App\Exceptions\InappropriateLanguageException;
 use App\Exceptions\UserDoesNotExistException;
 use App\Models\Post;
-use App\Repository\IPostRepository;
-use App\Repository\IUserRepository;
+use App\Repositories\IPostRepository;
+use App\Repositories\IUserRepository;
 
 class PostCreationService
 {

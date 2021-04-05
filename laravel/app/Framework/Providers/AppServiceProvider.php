@@ -1,19 +1,19 @@
 <?php
 
-namespace App\Providers;
+namespace App\Framework\Providers;
 
-use App\Repository\FollowingsRepository;
-use App\Repository\IFollowingsRepository;
-use App\Repository\IPostRepository;
-use App\Repository\IUserRepository;
-use App\Repository\PostRepository;
-use App\Repository\UserRepository;
-use App\Service\FollowingsService;
-use App\Service\IPasswordHashService;
-use App\Service\PostCreationService;
-use App\Service\RegistrationService;
-use App\Service\SHA512PasswordHashService;
-use App\Service\UserService;
+use App\Repositories\FollowingsRepository;
+use App\Repositories\IFollowingsRepository;
+use App\Repositories\IPostRepository;
+use App\Repositories\IUserRepository;
+use App\Repositories\PostRepository;
+use App\Repositories\UserRepository;
+use App\Services\FollowingsService;
+use App\Services\IPasswordHashService;
+use App\Services\PostCreationService;
+use App\Services\RegistrationService;
+use App\Services\SHA512PasswordHashService;
+use App\Services\UserService;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider

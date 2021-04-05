@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 
 
 use App\Http\Transformers\UserTransformer;
-use App\Service\UserService;
+use App\Services\UserService;
 use Illuminate\Http\Response;
 
 class UserController extends Controller

@@ -7,9 +7,9 @@ namespace Tests\Service;
 use App\DTO\UserRegistrationRequest;
 use App\Exceptions\DuplicateUsernameException;
 use App\Models\User;
-use App\Repository\IUserRepository;
-use App\Service\IPasswordHashService;
-use App\Service\RegistrationService;
+use App\Repositories\IUserRepository;
+use App\Services\IPasswordHashService;
+use App\Services\RegistrationService;
 use Tests\TestCase;
 
 class RegistrationServiceTest extends TestCase

@@ -10,8 +10,8 @@ use App\Exceptions\Login\LoginFailException;
 use App\Http\Requests\LoginHTTPRequest;
 use App\Http\Requests\UserRegistrationHTTPRequest;
 use App\Http\Transformers\UserTransformer;
-use App\Service\LoginService;
-use App\Service\RegistrationService;
+use App\Services\LoginService;
+use App\Services\RegistrationService;
 use Illuminate\Http\Response;
 
 class AuthorizationController

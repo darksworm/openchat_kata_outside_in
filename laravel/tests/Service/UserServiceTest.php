@@ -4,8 +4,8 @@ namespace Tests\Service;
 
 use App\Exceptions\UserDoesNotExistException;
 use App\Models\User;
-use App\Repository\IUserRepository;
-use App\Service\UserService;
+use App\Repositories\IUserRepository;
+use App\Services\UserService;
 use PHPUnit\Framework\TestCase;
 
 class UserServiceTest extends TestCase

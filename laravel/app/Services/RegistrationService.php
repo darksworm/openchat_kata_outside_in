@@ -1,13 +1,13 @@
 <?php
 
 
-namespace App\Service;
+namespace App\Services;
 
 
 use App\DTO\UserRegistrationRequest;
 use App\Exceptions\DuplicateUsernameException;
 use App\Models\User;
-use App\Repository\IUserRepository;
+use App\Repositories\IUserRepository;
 
 class RegistrationService
 {

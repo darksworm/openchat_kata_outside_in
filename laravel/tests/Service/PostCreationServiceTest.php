@@ -6,9 +6,9 @@ use App\DTO\PostCreationRequest;
 use App\Exceptions\InappropriateLanguageException;
 use App\Exceptions\UserDoesNotExistException;
 use App\Models\Post;
-use App\Repository\IPostRepository;
-use App\Repository\IUserRepository;
-use App\Service\PostCreationService;
+use App\Repositories\IPostRepository;
+use App\Repositories\IUserRepository;
+use App\Services\PostCreationService;
 use Tests\TestCase;
 
 class PostCreationServiceTest extends TestCase

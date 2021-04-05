@@ -9,7 +9,7 @@ use App\Exceptions\InappropriateLanguageException;
 use App\Exceptions\UserDoesNotExistException;
 use App\Http\Requests\CreatePostHTTPRequest;
 use App\Http\Transformers\PostTransformer;
-use App\Service\PostCreationService;
+use App\Services\PostCreationService;
 use Illuminate\Http\Response;
 
 class PostController extends Controller

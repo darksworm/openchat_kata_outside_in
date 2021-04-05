@@ -6,9 +6,9 @@ use App\Exceptions\Login\BadPasswordException;
 use App\Exceptions\Login\EmptyCredentialsException;
 use App\Exceptions\Login\LoginFailException;
 use App\Models\User;
-use App\Repository\IUserRepository;
-use App\Service\IPasswordHashService;
-use App\Service\LoginService;
+use App\Repositories\IUserRepository;
+use App\Services\IPasswordHashService;
+use App\Services\LoginService;
 use Generator;
 use PHPUnit\Framework\TestCase;
 

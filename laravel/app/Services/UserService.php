@@ -1,11 +1,11 @@
 <?php
 
 
-namespace App\Service;
+namespace App\Services;
 
 
 use App\Exceptions\UserDoesNotExistException;
-use App\Repository\IUserRepository;
+use App\Repositories\IUserRepository;
 use Illuminate\Support\Collection;
 
 class UserService

@@ -2,7 +2,7 @@
 
 namespace Tests\Service;
 
-use App\Service\SHA512PasswordHashService;
+use App\Services\SHA512PasswordHashService;
 use PHPUnit\Framework\TestCase;
 use RuntimeException;
 
