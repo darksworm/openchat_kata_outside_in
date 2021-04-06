@@ -12,8 +12,7 @@ Openchat API implemented using Outside-In/London style TDD with PHP8 and Laravel
 1. Don't test the framework; test the behaviour of the framework instead.
 1. Approach tests as any other piece of code; otherwise they end up as spaghetti.
 1. Use mutation testing; otherwise your tests might be falsely covering your code.
-1. Don't use static mock data for feature tests; otherwise you might end up with deadlocks when running tests in
-   parallel.
+1. Don't use static mock data for feature tests; oterwise deadlocks will pop up when running tests in parallel.
 1. Not letting the framework creep into your BL is hard, but can be done and is probably wise.
 
 ### Testing the framework
