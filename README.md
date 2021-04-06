@@ -76,8 +76,8 @@ due to manipulating rows with the same unique identifiers... (don't do that!)
 
 ### Laravel
 
-Although I have pushed all the framework crap away in its own directory, it has bled into the BL due to its ease of use
-- having collections is just too nice. I'm starting to wonder whether BL should depend only on separate libraries
+Although I have pushed all the framework crap away in its own directory, it has bled into the BL due to its ease of use - 
+having collections is just too nice. I'm starting to wonder whether BL should depend only on separate libraries
 instead of the framework or depend on nothing at all.
 
 Organizing database migrations in the same project as the BL resides just seems like a bad idea to me. This means your
