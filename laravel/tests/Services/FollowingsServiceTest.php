@@ -73,9 +73,6 @@ class FollowingsServiceTest extends TestCase
     test_creates_following()
     {
         [$followerId, $followeeId] = [Str::uuid()->toString(), Str::uuid()->toString()];
-        $following = new Following();
-        $following->follower_id = $followerId;
-        $following->followee_id = $followeeId;
 
         $this->userService->expects($this->once())
             ->method('validateUsersExist')
@@ -85,6 +82,10 @@ class FollowingsServiceTest extends TestCase
             ->method('followingExists')
             ->with($followerId, $followeeId)
             ->willReturn(false);
+
+        $following = new Following();
+        $following->follower_id = $followerId;
+        $following->followee_id = $followeeId;
 
         $this->followingsRepository->expects($this->once())
             ->method('createFollowing')
@@ -98,8 +99,6 @@ class FollowingsServiceTest extends TestCase
     public function
     test_throws_when_trying_to_get_followees_for_non_existent_user()
     {
-        $this->expectException(UserDoesNotExistException::class);
-
         $nonExistentUserId = Str::uuid();
 
         $this->userService->expects($this->once())
@@ -107,6 +106,7 @@ class FollowingsServiceTest extends TestCase
             ->with($nonExistentUserId)
             ->willThrowException(new UserDoesNotExistException($nonExistentUserId));
 
+        $this->expectException(UserDoesNotExistException::class);
         $this->followingsService->getFolloweesForUser($nonExistentUserId);
     }
 
@@ -126,16 +126,15 @@ class FollowingsServiceTest extends TestCase
             ->willReturn($expectedUsers);
 
         $actualUsers = $this->followingsService->getFolloweesForUser($userId);
-
         $this->assertEquals($actualUsers, $expectedUsers);
     }
 
     public function missingUserStateProvider(): array
     {
         return [
-            [UserState::newMissing(), UserState::newExists()],
+            [UserState::newMissing(), UserState::newExisting()],
             [UserState::newMissing(), UserState::newMissing()],
-            [UserState::newExists(), UserState::newMissing()],
+            [UserState::newExisting(), UserState::newMissing()],
         ];
     }
 }
@@ -145,19 +144,19 @@ class UserState
     public bool $exists;
     public string $id;
 
-    public static function newExists(): UserState
+    public static function newExisting(): UserState
     {
-        return new UserState(true, null);
+        return new UserState(true);
     }
 
     public static function newMissing(): UserState
     {
-        return new UserState(false, null);
+        return new UserState(false);
     }
 
-    private function __construct(bool $exists, ?string $id)
+    private function __construct(bool $exists)
     {
         $this->exists = $exists;
-        $this->id = $id === null ? Str::uuid() : $id;
+        $this->id = Str::uuid();
     }
 }

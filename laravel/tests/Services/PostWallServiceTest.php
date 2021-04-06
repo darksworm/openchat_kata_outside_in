@@ -22,14 +22,13 @@ class PostWallServiceTest extends TestCase
 
         $this->userService = $this->createMock(UserService::class);
         $this->postRepository = $this->createMock(IPostRepository::class);
+
         $this->wallService = new PostWallService($this->userService, $this->postRepository);
     }
 
     public function
     test_throws_when_user_does_not_exist()
     {
-        $this->expectException(UserDoesNotExistException::class);
-
         $missingUserId = Str::uuid();
 
         $this->userService->expects($this->once())
@@ -37,14 +36,15 @@ class PostWallServiceTest extends TestCase
             ->with($missingUserId)
             ->willThrowException(new UserDoesNotExistException($missingUserId));
 
+        $this->expectException(UserDoesNotExistException::class);
         $this->wallService->wallForUserId($missingUserId);
     }
 
     public function
     test_returns_wall()
     {
-        $expectedPosts = collect([new Post(), new Post()]);
         $userId = Str::uuid();
+        $expectedPosts = collect([new Post(), new Post()]);
 
         $this->userService->expects($this->once())
             ->method('validateUsersExist')

@@ -22,40 +22,37 @@ class UserServiceTest extends TestCase
     }
 
     public function
-    test_validateUsersExist_throws_when_at_least_one_user_doesnt_exist()
+    test_throws_exception_with_user_id_when_at_least_one_user_does_not_exist()
     {
         $this->userRepository->expects($this->once())
             ->method('getUsersById')
-            ->with('otheruser', 'someuser', 'user_id')
-            ->willReturn(collect([['user_id' => 'otheruser'], ['user_id' => 'someuser']]));
+            ->with('one', 'two', 'three')
+            ->willReturn(collect([['user_id' => 'one'], ['user_id' => 'two']]));
 
         try {
-            $this->userService->validateUsersExist('otheruser', 'someuser', 'user_id');
+            $this->userService->validateUsersExist('one', 'two', 'three');
         } catch (UserDoesNotExistException $e) {
-            $this->assertEquals('user_id', $e->getUserId());
+            $this->assertEquals('three', $e->getUserId());
         } finally {
             $this->assertFalse(empty($e), 'Expected UserDoesNotExist exception to be thrown!');
         }
     }
 
     public function
-    test_validateUsersExist_does_not_throw_when_all_users_exist()
+    test_does_not_throw_when_all_users_exist()
     {
         $this->userRepository->expects($this->once())
             ->method('getUsersById')
-            ->with('user_id', 'dank')
-            ->willReturn(collect([['user_id' => 'user_id'], ['user_id' => 'dank']]));
+            ->with('one', 'two')
+            ->willReturn(collect([['user_id' => 'one'], ['user_id' => 'two']]));
 
-        $this->userService->validateUsersExist('user_id', 'dank');
+        $this->userService->validateUsersExist('one', 'two');
     }
 
     public function
-    test_getAllUsers_delegates_to_repository()
+    test_retrieves_all_existing_users()
     {
-        $expectedUsers = collect([
-            new User(),
-            new User(),
-        ]);
+        $expectedUsers = collect([new User(), new User()]);
 
         $this->userRepository->expects($this->once())
             ->method('getAllUsers')

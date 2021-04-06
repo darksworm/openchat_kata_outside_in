@@ -15,12 +15,11 @@ class PostTransformerTest extends TestCase
     {
         $post = new MockPost();
         $transformed = PostTransformer::transform($post)->toArray();
-
         $this->assertPostTransformed($post, $transformed);
     }
 
     public function
-    test_transforms_posts_via_transformAll()
+    test_transforms_all_posts()
     {
         $posts = [new MockPost(), new MockPost()];
         $transformed = PostTransformer::transformAll(... $posts)->toArray();
@@ -54,7 +53,7 @@ class MockPost extends Post
     {
         $this->user_id = Str::uuid();
         $this->post_id = Str::uuid();
-        $this->text = (string)random_bytes(16);
+        $this->text = Str::random();
         $this->created_at = Carbon::now();
     }
 }

@@ -8,7 +8,7 @@ use App\Exceptions\UserDoesNotExistException;
 use App\Repositories\IPostRepository;
 use Illuminate\Support\Collection;
 
-class TimelineService
+class PostTimelineService
 {
     public function __construct(
         private UserService $userService,

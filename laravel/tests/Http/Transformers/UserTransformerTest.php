@@ -26,7 +26,7 @@ class UserTransformerTest extends TestCase
     }
 
     public function
-    test_copies_id_username_and_about_via_transformAll()
+    test_transforms_all_users()
     {
         $users = [new MockUser(), new MockUser()];
         $transformed = UserTransformer::transformAll(...$users)->toArray();

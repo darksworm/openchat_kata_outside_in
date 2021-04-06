@@ -13,13 +13,13 @@ use App\Http\Requests\GetWallRequest;
 use App\Http\Transformers\PostTransformer;
 use App\Services\PostCreationService;
 use App\Services\PostWallService;
-use App\Services\TimelineService;
+use App\Services\PostTimelineService;
 use Illuminate\Http\Response;
 
 class PostController extends Controller
 {
     public function __construct(private PostCreationService $postCreationService,
-                                private TimelineService $timelineService,
+                                private PostTimelineService $timelineService,
                                 private PostWallService $wallService)
     {
     }

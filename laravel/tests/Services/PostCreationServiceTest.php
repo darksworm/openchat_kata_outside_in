@@ -18,17 +18,27 @@ class PostCreationServiceTest extends TestCase
 
     private PostCreationService $postCreationService;
 
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->userRepository = $this->createMock(IUserRepository::class);
+        $this->postRepository = $this->createMock(IPostRepository::class);
+
+        $this->postCreationService = new PostCreationService($this->userRepository, $this->postRepository);
+    }
+
     public function
     test_throws_exception_when_nonexistent_user_id_passed()
     {
-        $this->expectException(UserDoesNotExistException::class);
-
         $this->userRepository->expects($this->once())
             ->method('userWithIdExists')
-            ->with("userId")
+            ->with('userId')
             ->willReturn(false);
 
-        $postRequest = new PostCreationRequest("userId", "asdfasdfas");
+        $postRequest = new PostCreationRequest('userId', 'asdfasdfas');
+
+        $this->expectException(UserDoesNotExistException::class);
         $this->postCreationService->createPost($postRequest);
     }
 
@@ -38,14 +48,14 @@ class PostCreationServiceTest extends TestCase
     public function
     test_throws_exception_when_post_contains_inappropriate_language(string $inappropriateText)
     {
-        $this->expectException(InappropriateLanguageException::class);
-
         $this->userRepository->expects($this->once())
             ->method('userWithIdExists')
-            ->with("userId")
+            ->with('userId')
             ->willReturn(true);
 
-        $postRequest = new PostCreationRequest("userId", $inappropriateText);
+        $postRequest = new PostCreationRequest('userId', $inappropriateText);
+
+        $this->expectException(InappropriateLanguageException::class);
         $this->postCreationService->createPost($postRequest);
     }
 
@@ -68,11 +78,10 @@ class PostCreationServiceTest extends TestCase
 
         $postRequest = new PostCreationRequest($post->userId, $post->text);
         $createdPost = $this->postCreationService->createPost($postRequest);
-
         $this->assertEquals($post, $createdPost);
     }
 
-    public function inappropriateTextProvider()
+    public function inappropriateTextProvider(): array
     {
         return [
             ['ice cream'],
@@ -83,15 +92,5 @@ class PostCreationServiceTest extends TestCase
             ['eleICe cREamphant'],
             ['I like to eat oranges every day']
         ];
-    }
-
-    protected function setUp(): void
-    {
-        parent::setUp();
-
-        $this->userRepository = $this->createMock(IUserRepository::class);
-        $this->postRepository = $this->createMock(IPostRepository::class);
-
-        $this->postCreationService = new PostCreationService($this->userRepository, $this->postRepository);
     }
 }
