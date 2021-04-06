@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Service;
+namespace Tests\Services;
 
 use App\Exceptions\FollowingAlreadyExistsException;
 use App\Exceptions\UserDoesNotExistException;

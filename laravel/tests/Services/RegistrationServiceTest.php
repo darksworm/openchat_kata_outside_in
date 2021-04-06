@@ -1,7 +1,7 @@
 <?php
 
 
-namespace Tests\Service;
+namespace Tests\Services;
 
 
 use App\DTO\UserRegistrationRequest;

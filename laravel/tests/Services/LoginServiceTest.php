@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Service;
+namespace Tests\Services;
 
 use App\Exceptions\Login\BadPasswordException;
 use App\Exceptions\Login\EmptyCredentialsException;
