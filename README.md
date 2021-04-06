@@ -15,6 +15,7 @@ Choosing which classes to create interfaces for is not straight-forward - I ask 
 Although I have pushed all of the framework crap away in its own directory, it has bled into the BL due to it's ease of use - having collections is just too nice. I'm starting to wonder whether BL should depend only on separate libraries instead of the framework or depend on nothing at all.
 
 Feature/Integration/Acceptance tests (whatever you call them) need to be approached as any other piece of code - they have to be built using the same priciples otherwise they end up as spaghetti code. I opted to [extract common API calls as trait classes](https://github.com/darksworm/openchat_kata_outside_in/tree/master/laravel/tests/Feature/API), [do the same for data providers](https://github.com/darksworm/openchat_kata_outside_in/tree/master/laravel/tests/Feature/Providers), [asserts](https://github.com/darksworm/openchat_kata_outside_in/blob/master/laravel/tests/Feature/Shared/AssertsDateTimes.php) and [common test cases](https://github.com/darksworm/openchat_kata_outside_in/blob/master/laravel/tests/Feature/Shared/TestsEndpointExistence.php)
+That is probably also the case for unit tests, but I am yet to refactor them - seems like some common mocks can be extracted.
 
 It is easy to write tests with TDD which pass not due to the expected logic executing but the next logic having the same effect - I was throwing 3 instances of the same exception in a unit and the tests continued to pass when I removed the first or first two throws. I found this via mutation tests.
 
