@@ -48,7 +48,7 @@ The important part is the middle line - which tells us which features or use-cas
 ### Unit Tests
 A lot of method mocks I've written are repeated multiple times. A method I've used in 4 separate places in the production code ended up with 9 separate instances of it being mocked. My initial instinct is to refactor and make it DRY, but there is no reasonable way of doing so and it would hurt readability of the tests. I've stumbled upon some [DAMP vs DRY conversations](https://stackoverflow.com/questions/6453235/what-does-damp-not-dry-mean-when-talking-about-unit-tests) and come to the conculsion that it's better to leave the mocks as is - DAMP.
 
-At first glance, the unit tests seem very fragile because they test the implementation and because you have to mock some methods over and over, but it should not be a problem if the underlying design is good - I feel confident that mocking `UserService::validateUsersExists` will not result in a lot of pain down the line, because that method has **only one reason to change** and its sideffects are **unlikely to change**.
+At first glance, the unit tests seem very fragile because they test the implementation and because you have to mock some methods over and over, but it should not be a problem if the underlying design is good - for example, I feel confident that mocking `UserService::validateUsersExists` will not result in a lot of pain down the line, because that method has **only one reason to change** and its sideffects are **unlikely to change**.
 
 
 ### TDD
