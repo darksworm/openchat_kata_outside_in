@@ -87,3 +87,34 @@ Organizing database migrations in the same project as the BL resides just seems 
 web application must have not only read/write access to change data but also write access to add/remove tables. For
 better security the migrations should be executed by a different database user - something that laravel does not suggest
 you should do.
+
+### Swoole vs NGINX
+
+with 6 users in the database and using `wrk` to load-test the `GET /users` endpoint thusly:
+```
+wrk -t8 -c100 -d60s --timeout 10s http://localhost/users
+```
+
+#### NGINX
+```
+Running 1m test @ http://localhost/users
+  8 threads and 100 connections
+  Thread Stats   Avg      Stdev     Max   +/- Stdev
+    Latency     2.67s   397.49ms   3.04s    88.28%
+    Req/Sec    10.44      8.19    50.00     58.28%
+  2107 requests in 1.00m, 1.61MB read
+Requests/sec:     35.06
+Transfer/sec:     27.49KB
+```
+
+#### Swoole
+```
+Running 1m test @ http://localhost/users
+  8 threads and 100 connections
+  Thread Stats   Avg      Stdev     Max   +/- Stdev
+    Latency   121.34ms   46.64ms 425.52ms   68.40%
+    Req/Sec    96.80     33.98   292.00     74.36%
+  46351 requests in 1.00m, 33.82MB read
+Requests/sec:    771.30
+Transfer/sec:    576.22KB
+```
