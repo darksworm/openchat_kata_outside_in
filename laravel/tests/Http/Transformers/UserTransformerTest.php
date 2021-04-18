@@ -48,12 +48,12 @@ class UserTransformerTest extends TestCase
 
 class MockUser extends User
 {
-    public
-        $user_id,
-        $username,
-        $about,
-        $password;
+    public $user_id;
+    public $username;
+    public $about;
+    public $password;
 
+    /** @noinspection PhpMissingParentConstructorInspection */
     public function __construct(array $attributes = [])
     {
         $this->user_id = Str::uuid();

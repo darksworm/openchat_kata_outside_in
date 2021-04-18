@@ -49,6 +49,7 @@ class MockPost extends Post
     public $text;
     public $created_at;
 
+    /** @noinspection PhpMissingParentConstructorInspection */
     public function __construct(array $attributes = [])
     {
         $this->user_id = Str::uuid();
