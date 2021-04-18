@@ -1,0 +1,171 @@
+Index: .env
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.env b/.env
+--- a/.env	(revision c7551861c8bcaa3d0b4f0ef13c98f70e24055c03)
++++ b/.env	(revision dd48ff331a268bf3d1271013b845a6a1e19184ee)
+@@ -1,2 +1,2 @@
+ NODE_PATH="src/"
+-REACT_APP_API_URL="http://localhost:4321/"
++REACT_APP_API_URL="http://localhost/"
+Index: src/services/Post.js
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/services/Post.js b/src/services/Post.js
+--- a/src/services/Post.js	(revision c7551861c8bcaa3d0b4f0ef13c98f70e24055c03)
++++ b/src/services/Post.js	(revision dd48ff331a268bf3d1271013b845a6a1e19184ee)
+@@ -3,19 +3,25 @@
+ import APIError from 'domain/APIError'
+ 
+ axios.interceptors.response.use(
+-  response => response,
+-  error => error.response
+-    ? Promise.reject(new APIError(error.response))
+-    : Promise.reject(error)
++    response => response,
++    error => error.response
++        ? Promise.reject(new APIError(error.response))
++        : Promise.reject(error)
+ )
+ 
++const config = {
++    headers: {
++        'Content-Type': 'application/json'
++    }
++}
++
+ const parse = data => new Post(
+-  {
+-    id: data.postId,
+-    userId: data.userId,
+-    text: data.text,
+-    dateTime: new Date(data.dateTime)
+-  })
++    {
++        id: data.postId,
++        userId: data.userId,
++        text: data.text,
++        dateTime: new Date(data.dateTime)
++    })
+ 
+ class PostService {
+   async createPostByUser (userId, text) {
+@@ -23,19 +29,19 @@
+       text: text
+     }
+     const response = await axios.post(`${process.env.REACT_APP_API_URL}users/${userId}/timeline`,
+-      JSON.stringify(request))
++        JSON.stringify(request), config)
+ 
+     return parse(response.data)
+   }
+ 
+   async getPostsOfUser (userId) {
+-    const response = await axios.get(`${process.env.REACT_APP_API_URL}users/${userId}/timeline`)
++      const response = await axios.get(`${process.env.REACT_APP_API_URL}users/${userId}/timeline`, config)
+ 
+     return response.data.map(post => parse(post))
+   }
+ 
+   async getWallOfUser (userId) {
+-    const response = await axios.get(`${process.env.REACT_APP_API_URL}users/${userId}/wall`)
++      const response = await axios.get(`${process.env.REACT_APP_API_URL}users/${userId}/wall`, config)
+ 
+     return response.data.map(post => parse(post))
+   }
+Index: src/services/User.js
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/services/User.js b/src/services/User.js
+--- a/src/services/User.js	(revision c7551861c8bcaa3d0b4f0ef13c98f70e24055c03)
++++ b/src/services/User.js	(revision dd48ff331a268bf3d1271013b845a6a1e19184ee)
+@@ -3,21 +3,27 @@
+ import APIError from 'domain/APIError'
+ 
+ axios.interceptors.response.use(
+-  response => response,
+-  error => error.response
+-    ? Promise.reject(new APIError(error.response))
+-    : Promise.reject(error)
++    response => response,
++    error => error.response
++        ? Promise.reject(new APIError(error.response))
++        : Promise.reject(error)
+ )
+ 
++const config = {
++    headers: {
++        'Content-Type': 'application/json'
++    }
++}
++
+ const parse = data => new User({
+-  id: data.id,
+-  name: data.username,
+-  about: data.about
++    id: data.id,
++    name: data.username,
++    about: data.about
+ })
+ 
+ class UserService {
+-  constructor () {
+-    const userData = localStorage.getItem('user')
++    constructor() {
++        const userData = localStorage.getItem('user')
+     if (userData) this.user = new User(JSON.parse(userData))
+   }
+ 
+@@ -28,8 +34,8 @@
+       about: user.about
+     }
+     const response = await axios.post(
+-      `${process.env.REACT_APP_API_URL}users`,
+-      JSON.stringify(request))
++        `${process.env.REACT_APP_API_URL}users`,
++        JSON.stringify(request), config)
+ 
+     this.user = parse(response.data)
+     localStorage.setItem('user', JSON.stringify(this.user))
+@@ -42,7 +48,7 @@
+       password: password
+     }
+     const response = await axios.post(`${process.env.REACT_APP_API_URL}login`,
+-      JSON.stringify(request))
++        JSON.stringify(request), config)
+ 
+     this.user = parse(response.data)
+     localStorage.setItem('user', JSON.stringify(this.user))
+@@ -55,8 +61,8 @@
+   }
+ 
+   async getUsers () {
+-    const response = await axios.get(`${process.env.REACT_APP_API_URL}users`)
+-    const users = response.data.map(user => parse(user))
++      const response = await axios.get(`${process.env.REACT_APP_API_URL}users`, config)
++      const users = response.data.map(user => parse(user))
+ 
+     this.usersHash = users.reduce((map, user) => {
+       map[user.id] = user
+@@ -79,12 +85,12 @@
+       followeeId: id
+     }
+     await axios.post(
+-      `${process.env.REACT_APP_API_URL}followings`,
+-      JSON.stringify(request))
++        `${process.env.REACT_APP_API_URL}followings`,
++        JSON.stringify(request), config)
+   }
+ 
+   async getFollowees () {
+-    const response = await axios.get(`${process.env.REACT_APP_API_URL}followings/${this.user.id}/followees`)
++      const response = await axios.get(`${process.env.REACT_APP_API_URL}followings/${this.user.id}/followees`, config)
+ 
+     return response.data.map(user => parse(user))
+   }
