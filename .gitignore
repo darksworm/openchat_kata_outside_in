@@ -12,3 +12,5 @@ laravel/npm-debug.log
 laravel/yarn-error.log
 .idea/
 .phpunit.result.cache
+_ide_helper.php
+infection.log
