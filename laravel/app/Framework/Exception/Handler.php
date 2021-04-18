@@ -40,17 +40,6 @@ class Handler extends ExceptionHandler
             );
         }
 
-        if ($exception->getStatusCode() == 500) {
-            return response()->view(
-                'errors.500',
-                [
-                    'stackTrace' => $exception->getTraceAsString(),
-                    'error' => $exception->getMessage()
-                ],
-                500
-            );
-        }
-
         return parent::renderHttpException($exception);
     }
 }
