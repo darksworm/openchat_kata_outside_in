@@ -14,7 +14,7 @@ it because laravel does not understand `application/x-www-form-urlencoded` appar
 
 1. Don't test the framework; test the behaviour of the framework instead.
 1. Approach tests as any other piece of code; otherwise they end up as spaghetti.
-2. In most cases, prefer DAMP over for unit tests.
+2. In most cases, prefer DAMP over DRY for unit tests.
 3. Use mutation testing; otherwise your tests might be falsely covering your code.
 4. Don't use static mock data for feature tests; otherwise deadlocks will pop up when running tests in parallel.
 5. Not letting the framework creep into your BL is hard, but can be done and is probably wise.
